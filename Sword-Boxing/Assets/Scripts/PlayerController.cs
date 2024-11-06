@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     public GameObject player1;
     public GameObject player2;
+    public GameObject P1Punch;
+    public GameObject P2Punch;
 
     private bool P1Action;
     private bool P2Action;
@@ -16,7 +18,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         // P1Animator = player1.GetComponent<Animator>();
-        // P2Animator = player2.GetComponent<Animator>();
+        // P2Animator = player2.GetComponent<Animator>(); 
     }
 
     
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.W) && !P1Action)
         {
             P1Action = true;
+            P1Punch.SetActive(true);
             print("p1 punch start");
 
             /* Animation will be triggered here
@@ -79,6 +82,7 @@ public class PlayerController : MonoBehaviour
         Punch */
         if (Input.GetKeyDown(KeyCode.O) && !P2Action)
         {
+            P2Punch.SetActive(true);
             P2Action = true;
             print("p2 punch start");
 
@@ -133,6 +137,7 @@ public class PlayerController : MonoBehaviour
         P1Action = false;
         // P1Animator.SetBool("IsPunching", false);
         print("p1 punch end");
+        P1Punch.SetActive(false);
     }
     void Player1DodgeEnd()
     {
@@ -160,6 +165,7 @@ public class PlayerController : MonoBehaviour
         P2Action = false;
         // P2Animator.SetBool("IsPunching", false);
         print("p2 punch end");
+        P2Punch.SetActive(false);
     }
     void Player2DodgeEnd()
     {
