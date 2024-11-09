@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 26
-  productGUID: c38e7f0c494d82e4dbe08e9c5415382c
+  productGUID: f8fbde57926f876449d21a17058da8ec
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -754,10 +754,10 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 6714a81d-ff9b-4809-aa15-0a67baa05ed1
+  cloudProjectId: 6a5f6cd1-ab22-455e-909b-4ebd4ca4218f
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Sword-Boxing
+  projectName: Sword-Boxing 2024-11-04_12-10-37
   organizationId: jrocks9
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
