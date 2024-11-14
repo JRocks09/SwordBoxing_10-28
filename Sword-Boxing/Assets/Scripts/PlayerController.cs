@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         IEnumerator P1PunchFunction()
         {
             P1Action = true;
-            print("p1 punch start");
+            // print("p1 punch start");
 
             /* Animation will be triggered here
             P1Animator.SetBool("IsPunching", true); */
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
                     P1PunchFake.SetActive(false);
                 }
             }
-            else
+            else if (isP2Dodging && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
             {
                 // Punch was unsuccessful, player stunned
                 P1PunchFake.SetActive(true);
@@ -116,6 +116,16 @@ public class PlayerController : MonoBehaviour
                 // P1Animator.SetBool("IsStunned", false);
                 Player1PunchEnd();
             }
+            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+            {
+                P1PunchFake.SetActive(true);
+
+                yield return new WaitForSeconds(0.1f);
+                P1PunchFake.SetActive(false);
+
+                yield return new WaitForSeconds(0.3f);
+                P1Action = false;
+            }
         }
 
         // Dodge
@@ -127,7 +137,8 @@ public class PlayerController : MonoBehaviour
         IEnumerator P1DodgeFunction()
         {
             P1Action = true;
-            print("p1 dodge start");
+            // print("p1 dodge start");
+
             /* Animation will be triggered here
             P1Animator.SetBool("IsDodging", true); */
 
@@ -152,7 +163,7 @@ public class PlayerController : MonoBehaviour
         IEnumerator P1SliceFunction()
         {
             P1Action = true;
-            print("p1 slice start");
+            // print("p1 slice start");
 
             /* Animation will be triggered here
             P1Animator.SetBool("IsSlicing", true); */
@@ -180,7 +191,7 @@ public class PlayerController : MonoBehaviour
                     P1SliceFake.SetActive(false);
                 }
             }
-            else
+            else if (isP2Deflecting && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
             {
                 // Slice was unsuccessful, player stunned
                 P1SliceFake.SetActive(true);
@@ -196,6 +207,16 @@ public class PlayerController : MonoBehaviour
                 // P1Animator.SetBool("IsStunned", false);
                 Player1SliceEnd();
             }
+            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+            {
+                P1SliceFake.SetActive(true);
+
+                yield return new WaitForSeconds(0.1f);
+                P1SliceFake.SetActive(false);
+
+                yield return new WaitForSeconds(0.3f);
+                P1Action = false;
+            }
         }
 
         // Deflect
@@ -207,7 +228,8 @@ public class PlayerController : MonoBehaviour
         IEnumerator P1DeflectFunction()
         {
             P1Action = true;
-            print("p1 deflect start");
+            // print("p1 deflect start");
+
             /* Animation will be triggered here
             P1Animator.SetBool("IsDeflecting", true); */
 
@@ -255,7 +277,7 @@ public class PlayerController : MonoBehaviour
         IEnumerator P2PunchFunction()
         {
             P2Action = true;
-            print("p2 punch start");
+            // print("p2 punch start");
 
             /* Animation will be triggered here
             P2Animator.SetBool("IsPunching", true); */
@@ -282,7 +304,7 @@ public class PlayerController : MonoBehaviour
                     P2PunchFake.SetActive(false);
                 }
             }
-            else
+            else if (isP1Dodging && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
             {
                 // Punch was unsuccessful, player stunned
                 P2PunchFake.SetActive(true);
@@ -298,6 +320,16 @@ public class PlayerController : MonoBehaviour
                 // P2Animator.SetBool("IsStunned", false);
                 Player2PunchEnd();
             }
+            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+            {
+                P2PunchFake.SetActive(true);
+
+                yield return new WaitForSeconds(0.1f);
+                P2PunchFake.SetActive(false);
+
+                yield return new WaitForSeconds(0.3f);
+                P2Action = false;
+            }
         }
 
         // Dodge
@@ -309,7 +341,8 @@ public class PlayerController : MonoBehaviour
         IEnumerator P2DodgeFunction()
         {
             P2Action = true;
-            print("p2 dodge start");
+            // print("p2 dodge start");
+
             /* Animation will be triggered here
             P2Animator.SetBool("IsDodging", true); */
 
@@ -334,7 +367,7 @@ public class PlayerController : MonoBehaviour
         IEnumerator P2SliceFunction()
         {
             P2Action = true;
-            print("p2 slice start");
+            // print("p2 slice start");
 
             /* Animation will be triggered here
             P2Animator.SetBool("IsSlicing", true); */
@@ -362,7 +395,7 @@ public class PlayerController : MonoBehaviour
                     P2SliceFake.SetActive(false);
                 }
             }
-            else
+            else if (isP1Deflecting && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
             {
                 // Slice was unsuccessful, player stunned
                 P2SliceFake.SetActive(true);
@@ -378,6 +411,16 @@ public class PlayerController : MonoBehaviour
                 // P2Animator.SetBool("IsStunned", false);
                 Player2SliceEnd();
             }
+            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+            {
+                P2SliceFake.SetActive(true);
+
+                yield return new WaitForSeconds(0.1f);
+                P2SliceFake.SetActive(false);
+
+                yield return new WaitForSeconds(0.3f);
+                P2Action = false;
+            }
         }
 
         // Deflect
@@ -389,7 +432,8 @@ public class PlayerController : MonoBehaviour
         IEnumerator P2DeflectFunction()
         {
             P2Action = true;
-            print("p2 deflect start");
+            // print("p2 deflect start");
+
             /* Animation will be triggered here
             P2Animator.SetBool("IsDeflecting", true); */
 
@@ -431,7 +475,7 @@ public class PlayerController : MonoBehaviour
         P1Action = false;
         // P1Animator.SetBool("IsPunching", false);
 
-        print("p1 punch end");
+        // print("p1 punch end");
         meshP1.material.color = Color.red;
         P2PunchDamage.otherPlayerCanAttack = true;
         P1PunchDamage.otherPlayerCanAttack = true;
@@ -441,14 +485,14 @@ public class PlayerController : MonoBehaviour
         P1Action = false;
         // P1Animator.SetBool("IsDodging", false);
 
-        print("p1 dodge end");
+        // print("p1 dodge end");
     }
     void Player1SliceEnd()
     {
         P1Action = false;
         // P1Animator.SetBool("IsSlicing", false);
 
-        print("p1 slice end");
+        // print("p1 slice end");
         meshP1.material.color = Color.red;
         P2SliceDamage.otherPlayerCanAttack = true;
         P1SliceDamage.otherPlayerCanAttack = true;
@@ -458,7 +502,7 @@ public class PlayerController : MonoBehaviour
         P1Action = false;
         // P1Animator.SetBool("IsDeflecting", false);
 
-        print("p1 deflect end");
+        // print("p1 deflect end");
     }
 
 
@@ -468,7 +512,7 @@ public class PlayerController : MonoBehaviour
         P2Action = false;
         // P2Animator.SetBool("IsPunching", false);
 
-        print("p2 punch end");
+        // print("p2 punch end");
         meshP2.material.color = Color.blue;
         P1PunchDamage.otherPlayerCanAttack = true;
         P2PunchDamage.otherPlayerCanAttack = true;
@@ -478,14 +522,14 @@ public class PlayerController : MonoBehaviour
         P2Action = false;
         // P2Animator.SetBool("IsDodging", false);
 
-        print("p2 dodge end");
+        // print("p2 dodge end");
     }
     void Player2SliceEnd()
     {
         P2Action = false;
         // P2Animator.SetBool("IsSlicing", false);
 
-        print("p2 slice end");
+        // print("p2 slice end");
         meshP2.material.color = Color.blue;
         P1SliceDamage.otherPlayerCanAttack = true;
         P2SliceDamage.otherPlayerCanAttack = true;
@@ -495,6 +539,6 @@ public class PlayerController : MonoBehaviour
         P2Action = false;
         // P2Animator.SetBool("IsDeflecting", false);
 
-        print("p2 deflect end");
+        // print("p2 deflect end");
     }
 }

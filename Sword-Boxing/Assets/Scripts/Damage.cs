@@ -38,7 +38,7 @@ public class Damage : MonoBehaviour
                 otherPlayerCanAttack = false;
                 collision.gameObject.GetComponent<playerHealth>().health -= damage;
                 Invoke(nameof(InvincibilityOver), invincibilityTimer);
-                print(collision.name + " invincible");
+                // print(collision.name + " invincible");
 
                 // Plays damage taken SFX [PUNCH] >> Change Later
                 audioManager.PlaySFX(audioManager.damageTaken, 1);
@@ -55,7 +55,7 @@ public class Damage : MonoBehaviour
                 otherPlayerCanAttack = false;
                 collision.gameObject.GetComponent<playerHealth>().health -= damage;
                 Invoke(nameof(InvincibilityOver), invincibilityTimer);
-                print(collision.name + " invincible");
+                // print(collision.name + " invincible");
 
                 // Plays damage taken SFX [SLICE] >> Change Later
                 audioManager.PlaySFX(audioManager.damageTaken, 1);
@@ -67,6 +67,7 @@ public class Damage : MonoBehaviour
     {
         playerInvincible = false;
 
+        /*
         if (name == "P1PunchFist" || name == "P1SliceArc")
         {
             print("Player2 vulnerable");
@@ -75,6 +76,7 @@ public class Damage : MonoBehaviour
         {
             print("Player1 vulnerable");
         }
+        */
     }
 
 }
