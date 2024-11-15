@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -61,6 +62,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("BoxingRing");
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+        
         // ~ Player 1 Controls ~
 
         // Punch
@@ -246,21 +257,20 @@ public class PlayerController : MonoBehaviour
         }
 
         // Damage Flicker (I-Frames)
-        if (flickering && (P1SliceDamage.playerInvincible || P1PunchDamage.playerInvincible))
+        if (flickering && (P2SliceDamage.playerInvincible || P2PunchDamage.playerInvincible))
         {
             StartCoroutine(P1DamageFlicker());
+            flickering = false;
         }
         
         IEnumerator P1DamageFlicker()
         {
-            flickering = false;
             for (int i = 0; i < 7; i++)
             {
-                meshP2.material.color = new Color(0, 0, 1, 0.5f);
+                meshP1.material.color = new Color(1, 0, 0, 0.5f);
                 yield return new WaitForSeconds(0.1f);
-                meshP2.material.color = Color.blue;
+                meshP1.material.color = Color.red;
                 yield return new WaitForSeconds(0.1f);
-
             }
         }
 
@@ -450,21 +460,20 @@ public class PlayerController : MonoBehaviour
         }
 
         // Damage Flicker (I-Frames)
-        if (flickering && (P2SliceDamage.playerInvincible || P2PunchDamage.playerInvincible))
+        if (flickering && (P1SliceDamage.playerInvincible || P1PunchDamage.playerInvincible))
         {
             StartCoroutine(P2DamageFlicker());
+            flickering = false;
         }
 
         IEnumerator P2DamageFlicker()
         {
-            flickering = false;
-            for (int i = 0; i < 7; i++)
+            for (int j = 0; j < 7; j++)
             {
-                meshP1.material.color = new Color(1, 0, 0, 0.5f);
+                meshP2.material.color = new Color(0, 0, 1, 0.5f);
                 yield return new WaitForSeconds(0.1f);
-                meshP1.material.color = Color.red;
+                meshP2.material.color = Color.blue;
                 yield return new WaitForSeconds(0.1f);
-
             }
         }
     }

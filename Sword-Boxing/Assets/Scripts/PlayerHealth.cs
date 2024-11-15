@@ -40,13 +40,13 @@ public class playerHealth : MonoBehaviour
             // Win State
             if (name == "Player1")
             {
-                winText.text = "Player 2 Wins!";
+                winText.text = "Player 2 Wins! Press R to restart";
                 winText.color = Color.blue;
             }
 
             if (name == "Player2")
             {
-                winText.text = "Player 1 Wins!";
+                winText.text = "Player 1 Wins! Press R to restart";
                 winText.color = Color.red;
             }
 
