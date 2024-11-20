@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
 
     // public Animator P1Animator;
-    // public Animator P2Animator;
+    public Animator P2Animator;
 
     void Start()
     {
@@ -379,10 +379,10 @@ public class PlayerController : MonoBehaviour
             P2Action = true;
             // print("p2 slice start");
 
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsSlicing", true); */
+            // Animation
+            P2Animator.SetBool("IsSlicing", true);
 
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of slice to impact
+            yield return new WaitForSeconds(0.5f); // Time value is length from start of slice to impact
 
             if (!isP1Deflecting)
             {
@@ -417,7 +417,7 @@ public class PlayerController : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 P2SliceFake.SetActive(false);
 
-                yield return new WaitForSeconds(1); // Time value is stunned period
+                yield return new WaitForSeconds(1.5f); // Time value is stunned period
                 // P2Animator.SetBool("IsStunned", false);
                 Player2SliceEnd();
             }
@@ -536,7 +536,7 @@ public class PlayerController : MonoBehaviour
     void Player2SliceEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsSlicing", false);
+        P2Animator.SetBool("IsSlicing", false);
 
         // print("p2 slice end");
         meshP2.material.color = Color.blue;
