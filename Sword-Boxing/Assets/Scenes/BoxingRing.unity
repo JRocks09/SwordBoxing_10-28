@@ -310,6 +310,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2013739675}
     m_Modifications:
+    - target: {fileID: -8918384404438777152, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
+      propertyPath: m_Name
+      value: BruteMesh
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.9121672
@@ -1307,6 +1311,8 @@ MonoBehaviour:
   P2PunchDamage: {fileID: 1066829132}
   P1SliceDamage: {fileID: 1313209664}
   P2SliceDamage: {fileID: 962715336}
+  P1Health: {fileID: 1374598509}
+  P2Health: {fileID: 1252884446}
   P1Animator: {fileID: 2085832279}
   P2Animator: {fileID: 602248399}
 --- !u!4 &800787355
@@ -2447,6 +2453,7 @@ MonoBehaviour:
   healthBar: {fileID: 1516844369}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
+  winState: 0
 --- !u!54 &1252884447
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2941,6 +2948,7 @@ MonoBehaviour:
   healthBar: {fileID: 1154092107}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
+  winState: 0
 --- !u!54 &1374598510
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4300,7 +4308,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e39342798681f0b45881c0a4098317b3, type: 3}
       propertyPath: m_Name
-      value: Ch43_nonPBR
+      value: Wrestler
+      objectReference: {fileID: 0}
+    - target: {fileID: 8590174512768330386, guid: e39342798681f0b45881c0a4098317b3, type: 3}
+      propertyPath: m_Name
+      value: WrestlerMesh
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
