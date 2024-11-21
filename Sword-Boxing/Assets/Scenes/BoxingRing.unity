@@ -1307,6 +1307,8 @@ MonoBehaviour:
   isP2Deflecting: 0
   P1flickering: 0
   P2flickering: 0
+  P1WinFunction: 0
+  P2WinFunction: 0
   P1PunchDamage: {fileID: 1780007991}
   P2PunchDamage: {fileID: 1066829132}
   P1SliceDamage: {fileID: 1313209664}
@@ -2449,7 +2451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e19d5fea537d0409ae9e7e83faa863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 20
   healthBar: {fileID: 1516844369}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
@@ -2944,7 +2946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e19d5fea537d0409ae9e7e83faa863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 20
   healthBar: {fileID: 1154092107}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
