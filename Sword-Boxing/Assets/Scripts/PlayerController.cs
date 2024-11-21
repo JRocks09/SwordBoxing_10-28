@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool isP1Deflecting;
     [HideInInspector] public bool isP2Deflecting;
 
-    [HideInInspector] public bool flickering;
+    [HideInInspector] public bool P1flickering;
+    [HideInInspector] public bool P2flickering;
 
     private bool P1Action;
     private bool P2Action;
@@ -124,13 +125,11 @@ public class PlayerController : MonoBehaviour
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
             {
+                Invoke("Player1PunchEnd", 0.8f);
                 P1PunchFake.SetActive(true);
 
                 yield return new WaitForSeconds(0.1f);
                 P1PunchFake.SetActive(false);
-
-                yield return new WaitForSeconds(0.3f);
-                P1Action = false;
             }
         }
 
@@ -145,8 +144,8 @@ public class PlayerController : MonoBehaviour
             P1Action = true;
             // print("p1 dodge start");
 
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsDodging", true); */
+            // Animation
+            P1Animator.SetBool("IsDodging", true);
 
             yield return new WaitForSeconds(0.3f); // Time [before] player is in dodging state
             isP1Dodging = true;
@@ -219,13 +218,11 @@ public class PlayerController : MonoBehaviour
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
             {
+                Invoke("Player1PunchEnd", 0.8f);
                 P1SliceFake.SetActive(true);
 
                 yield return new WaitForSeconds(0.1f);
                 P1SliceFake.SetActive(false);
-
-                yield return new WaitForSeconds(0.3f);
-                P1Action = false;
             }
         }
 
@@ -241,7 +238,7 @@ public class PlayerController : MonoBehaviour
             // print("p1 deflect start");
 
             // Animation
-            // P1Animator.SetBool("IsDeflecting", true);
+            P1Animator.SetBool("IsDeflecting", true);
 
             yield return new WaitForSeconds(0.3f); // Time [before] player is in deflecting state
             isP1Deflecting = true;
@@ -256,10 +253,10 @@ public class PlayerController : MonoBehaviour
         }
 
         // Damage Flicker (I-Frames)
-        if (flickering && (P2SliceDamage.playerInvincible || P2PunchDamage.playerInvincible))
+        if (P1flickering && (P2SliceDamage.playerInvincible || P2PunchDamage.playerInvincible))
         {
             StartCoroutine(P1DamageFlicker());
-            flickering = false;
+            P1flickering = false;
         }
 
         IEnumerator P1DamageFlicker()
@@ -354,13 +351,11 @@ public class PlayerController : MonoBehaviour
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
             {
+                Invoke("Player1PunchEnd", 0.8f);
                 P2PunchFake.SetActive(true);
 
                 yield return new WaitForSeconds(0.1f);
                 P2PunchFake.SetActive(false);
-
-                yield return new WaitForSeconds(0.3f);
-                P2Action = false;
             }
         }
 
@@ -375,8 +370,8 @@ public class PlayerController : MonoBehaviour
             P2Action = true;
             // print("p2 dodge start");
 
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsDodging", true); */
+            // Animation
+            P2Animator.SetBool("IsDodging", true);
 
             yield return new WaitForSeconds(0.3f); // Time [before] player is in dodging state
             isP2Dodging = true;
@@ -449,13 +444,11 @@ public class PlayerController : MonoBehaviour
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
             {
+                Invoke("Player1PunchEnd", 0.8f);
                 P2SliceFake.SetActive(true);
 
                 yield return new WaitForSeconds(0.1f);
                 P2SliceFake.SetActive(false);
-
-                yield return new WaitForSeconds(0.3f);
-                P2Action = false;
             }
         }
 
@@ -470,8 +463,8 @@ public class PlayerController : MonoBehaviour
             P2Action = true;
             // print("p2 deflect start");
 
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsDeflecting", true); */
+            // Animation
+            P2Animator.SetBool("IsDeflecting", true);
 
             yield return new WaitForSeconds(0.3f); // Time [before] player is in deflecting state
             isP2Deflecting = true;
@@ -486,10 +479,10 @@ public class PlayerController : MonoBehaviour
         }
 
         // Damage Flicker (I-Frames)
-        if (flickering && (P1SliceDamage.playerInvincible || P1PunchDamage.playerInvincible))
+        if (P2flickering && (P1SliceDamage.playerInvincible || P1PunchDamage.playerInvincible))
         {
             StartCoroutine(P2DamageFlicker());
-            flickering = false;
+            P2flickering = false;
         }
 
         IEnumerator P2DamageFlicker()
@@ -520,7 +513,7 @@ public class PlayerController : MonoBehaviour
     void Player1DodgeEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsDodging", false);
+        P1Animator.SetBool("IsDodging", false);
 
         // print("p1 dodge end");
     }
@@ -537,7 +530,7 @@ public class PlayerController : MonoBehaviour
     void Player1DeflectEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsDeflecting", false);
+        P1Animator.SetBool("IsDeflecting", false);
 
         // print("p1 deflect end");
     }
@@ -557,7 +550,7 @@ public class PlayerController : MonoBehaviour
     void Player2DodgeEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsDodging", false);
+        P2Animator.SetBool("IsDodging", false);
 
         // print("p2 dodge end");
     }
@@ -574,7 +567,7 @@ public class PlayerController : MonoBehaviour
     void Player2DeflectEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsDeflecting", false);
+        P2Animator.SetBool("IsDeflecting", false);
 
         // print("p2 deflect end");
     }

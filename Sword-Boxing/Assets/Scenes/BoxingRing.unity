@@ -370,11 +370,15 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
     m_RemovedGameObjects:
     - {fileID: -5770850338934133332, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 602248399}
   m_SourcePrefab: {fileID: 100100000, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
 --- !u!1 &272541178
 GameObject:
@@ -741,6 +745,7 @@ MonoBehaviour:
   musicSource: {fileID: 1801181432}
   SFXSource: {fileID: 1777400490}
   damageTaken: {fileID: 8300000, guid: 20926ef76ef64944e8ef993374235dc3, type: 3}
+  hitSound: {fileID: 0}
 --- !u!4 &451588657
 Transform:
   m_ObjectHideFlags: 0
@@ -929,16 +934,32 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
   m_PrefabInstance: {fileID: 186372717}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &602248397 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
-  m_PrefabInstance: {fileID: 186372717}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &602248398 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
   m_PrefabInstance: {fileID: 186372717}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &602248399
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602248396}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8c64672b2f03f464d91b0e9993500c40, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &652507237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,7 +1284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1: {fileID: 1094153163}
-  player2: {fileID: 602248396}
+  player2: {fileID: 1026003568}
   P1Punch: {fileID: 1780007986}
   P2Punch: {fileID: 1066829130}
   P1PunchFake: {fileID: 1460371209}
@@ -1280,13 +1301,14 @@ MonoBehaviour:
   P2Deflect: {fileID: 1344966915}
   isP1Deflecting: 0
   isP2Deflecting: 0
-  flickering: 0
+  P1flickering: 0
+  P2flickering: 0
   P1PunchDamage: {fileID: 1780007991}
   P2PunchDamage: {fileID: 1066829132}
   P1SliceDamage: {fileID: 1313209664}
   P2SliceDamage: {fileID: 962715336}
   P1Animator: {fileID: 2085832279}
-  P2Animator: {fileID: 602248397}
+  P2Animator: {fileID: 602248399}
 --- !u!4 &800787355
 Transform:
   m_ObjectHideFlags: 0
@@ -1587,7 +1609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2136d20112d8b42b2ec9341abcbaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invincibilityTimer: 1.5
+  invincibilityTimer: 2.7
   playerInvincible: 0
   otherPlayerCanAttack: 0
   playerController: {fileID: 800787354}
@@ -1684,6 +1706,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 6.843, y: 180, z: 0}
+--- !u!1 &1026003568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8918384404438777152, guid: 602c8591e48d78341b7509d6ad68216f, type: 3}
+  m_PrefabInstance: {fileID: 186372717}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1066829130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1731,7 +1758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2136d20112d8b42b2ec9341abcbaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invincibilityTimer: 1.5
+  invincibilityTimer: 2.7
   playerInvincible: 0
   otherPlayerCanAttack: 0
   playerController: {fileID: 800787354}
@@ -2515,7 +2542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2136d20112d8b42b2ec9341abcbaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invincibilityTimer: 1.5
+  invincibilityTimer: 2.7
   playerInvincible: 0
   otherPlayerCanAttack: 0
   playerController: {fileID: 800787354}
@@ -3711,7 +3738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f2136d20112d8b42b2ec9341abcbaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invincibilityTimer: 1.5
+  invincibilityTimer: 2.7
   playerInvincible: 0
   otherPlayerCanAttack: 0
   playerController: {fileID: 800787354}
@@ -3747,7 +3774,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
