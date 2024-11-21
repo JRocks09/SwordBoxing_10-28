@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,9 +29,6 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public bool flickering;
 
-    MeshRenderer meshP1;
-    MeshRenderer meshP2;
-
     private bool P1Action;
     private bool P2Action;
 
@@ -43,16 +39,11 @@ public class PlayerController : MonoBehaviour
     public Damage P2SliceDamage;
 
 
-    // public Animator P1Animator;
+    public Animator P1Animator;
     public Animator P2Animator;
 
     void Start()
     {
-        meshP1 = player1.GetComponent<MeshRenderer>();
-        meshP2 = player2.GetComponent<MeshRenderer>();
-        // P1Animator = player1.GetComponent<Animator>();
-        // P2Animator = player2.GetComponent<Animator>(); 
-
         P1PunchDamage.otherPlayerCanAttack = true;
         P2PunchDamage.otherPlayerCanAttack = true;
         P1SliceDamage.otherPlayerCanAttack = true;
@@ -67,11 +58,11 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("BoxingRing");
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-        
+
         // ~ Player 1 Controls ~
 
         // Punch
@@ -85,27 +76,32 @@ public class PlayerController : MonoBehaviour
             P1Action = true;
             // print("p1 punch start");
 
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsPunching", true); */
+            // Animation
+            P1Animator.SetBool("IsPunching", true);
 
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of punch to impact
+            yield return new WaitForSeconds(0.6f); // Time value is length from start of punch to impact
 
             if (!isP2Dodging)
             {
-                Invoke("Player1PunchEnd", 0.4f); // Time value is length from impact to end of punch
+                Invoke("Player1PunchEnd", 0.8f); // Time value is length from impact to end of punch
 
                 // Punch Successful (Not attacked by the other player before this punch's impact)
-                if (P2PunchDamage.otherPlayerCanAttack)
+                if (P2PunchDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
                 {
+                    P2Action = true;
                     P1Punch.SetActive(true);
+                    P2Animator.SetBool("Damaged", true);
 
                     yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
                     P1Punch.SetActive(false);
+                    P2Animator.SetBool("Damaged", false);
+
+                    yield return new WaitForSeconds(0.7f);
+                    P2Action = false;
                 }
                 else
                 {
                     P1PunchFake.SetActive(true); // "Fake" means that the punch visually looks the same, but doesn't work mechanically
-
 
                     yield return new WaitForSeconds(0.1f);
                     P1PunchFake.SetActive(false);
@@ -117,14 +113,13 @@ public class PlayerController : MonoBehaviour
                 P1PunchFake.SetActive(true);
                 P2PunchDamage.otherPlayerCanAttack = true;
 
-                meshP1.material.color = Color.yellow; // Placeholder coloring
-                // P1Animator.SetBool("IsStunned", true);
+                P1Animator.SetBool("IsStunned", true);
 
                 yield return new WaitForSeconds(0.1f);
                 P1PunchFake.SetActive(false);
 
-                yield return new WaitForSeconds(1); // Time value is stunned period
-                // P1Animator.SetBool("IsStunned", false);
+                yield return new WaitForSeconds(1.5f); // Time value is stunned period
+                P1Animator.SetBool("IsStunned", false);
                 Player1PunchEnd();
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
@@ -176,27 +171,32 @@ public class PlayerController : MonoBehaviour
             P1Action = true;
             // print("p1 slice start");
 
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsSlicing", true); */
+            // Animation
+            P1Animator.SetBool("IsSlicing", true);
 
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of slice to impact
+            yield return new WaitForSeconds(0.5f); // Time value is length from start of slice to impact
 
             if (!isP2Deflecting)
             {
-                Invoke("Player1SliceEnd", 0.4f); // Time value is length from impact to end of slice
+                Invoke("Player1SliceEnd", 0.8f); // Time value is length from impact to end of slice
 
                 // Slice Successful (Not attacked by the other player before this slice's impact)
-                if (P2SliceDamage.otherPlayerCanAttack)
+                if (P2SliceDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
                 {
+                    P2Action = true;
                     P1Slice.SetActive(true);
+                    P2Animator.SetBool("Damaged", true);
 
                     yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
                     P1Slice.SetActive(false);
+                    P2Animator.SetBool("Damaged", false);
+
+                    yield return new WaitForSeconds(0.7f);
+                    P2Action = false;
                 }
                 else
                 {
                     P1SliceFake.SetActive(true); // "Fake" means that the slice visually looks the same, but doesn't work mechanically
-
 
                     yield return new WaitForSeconds(0.1f);
                     P1SliceFake.SetActive(false);
@@ -208,14 +208,13 @@ public class PlayerController : MonoBehaviour
                 P1SliceFake.SetActive(true);
                 P2SliceDamage.otherPlayerCanAttack = true;
 
-                meshP1.material.color = Color.yellow; // Placeholder coloring
-                // P1Animator.SetBool("IsStunned", true);
+                P1Animator.SetBool("IsStunned", true);
 
                 yield return new WaitForSeconds(0.1f);
                 P1SliceFake.SetActive(false);
 
-                yield return new WaitForSeconds(1); // Time value is stunned period
-                // P1Animator.SetBool("IsStunned", false);
+                yield return new WaitForSeconds(1.5f); // Time value is stunned period
+                P1Animator.SetBool("IsStunned", false);
                 Player1SliceEnd();
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
@@ -241,8 +240,8 @@ public class PlayerController : MonoBehaviour
             P1Action = true;
             // print("p1 deflect start");
 
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsDeflecting", true); */
+            // Animation
+            // P1Animator.SetBool("IsDeflecting", true);
 
             yield return new WaitForSeconds(0.3f); // Time [before] player is in deflecting state
             isP1Deflecting = true;
@@ -262,19 +261,37 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(P1DamageFlicker());
             flickering = false;
         }
-        
+
         IEnumerator P1DamageFlicker()
         {
+            yield return new WaitForSeconds(1.3f);
+
             for (int i = 0; i < 7; i++)
             {
-                meshP1.material.color = new Color(1, 0, 0, 0.5f);
+                player1.SetActive(false);
                 yield return new WaitForSeconds(0.1f);
-                meshP1.material.color = Color.red;
+                player1.SetActive(true);
                 yield return new WaitForSeconds(0.1f);
             }
         }
 
+
+
+
+
+
+
+
+
         // --------------------------------------------------
+
+
+
+
+
+
+
+
 
         // ~ Player 2 Controls ~
 
@@ -289,22 +306,28 @@ public class PlayerController : MonoBehaviour
             P2Action = true;
             // print("p2 punch start");
 
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsPunching", true); */
+            // Animation 
+            P2Animator.SetBool("IsPunching", true);
 
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of punch to impact
+            yield return new WaitForSeconds(0.6f); // Time value is length from start of punch to impact
 
             if (!isP1Dodging)
             {
-                Invoke("Player2PunchEnd", 0.4f); // Time value is length from impact to end of punch
+                Invoke("Player2PunchEnd", 0.8f); // Time value is length from impact to end of punch
 
                 // Punch Successful (Not attacked by the other player before this punch's impact)
-                if (P1PunchDamage.otherPlayerCanAttack)
+                if (P1PunchDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                 {
+                    P1Action = true;
                     P2Punch.SetActive(true);
+                    P1Animator.SetBool("Damaged", true);
 
                     yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
                     P2Punch.SetActive(false);
+                    P1Animator.SetBool("Damaged", false);
+
+                    yield return new WaitForSeconds(0.7f);
+                    P1Action = false;
                 }
                 else
                 {
@@ -320,14 +343,13 @@ public class PlayerController : MonoBehaviour
                 P2PunchFake.SetActive(true);
                 P1PunchDamage.otherPlayerCanAttack = true;
 
-                meshP2.material.color = Color.yellow; // Placeholder coloring
-                // P2Animator.SetBool("IsStunned", true);
+                P2Animator.SetBool("IsStunned", true);
 
                 yield return new WaitForSeconds(0.1f);
                 P2PunchFake.SetActive(false);
 
-                yield return new WaitForSeconds(1); // Time value is stunned period
-                // P2Animator.SetBool("IsStunned", false);
+                yield return new WaitForSeconds(1.5f); // Time value is stunned period
+                P2Animator.SetBool("IsStunned", false);
                 Player2PunchEnd();
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
@@ -386,20 +408,25 @@ public class PlayerController : MonoBehaviour
 
             if (!isP1Deflecting)
             {
-                Invoke("Player2SliceEnd", 0.4f); // Time value is length from impact to end of slice
+                Invoke("Player2SliceEnd", 0.8f); // Time value is length from impact to end of slice
 
                 // Slice Successful (Not attacked by the other player before this slice's impact)
-                if (P1SliceDamage.otherPlayerCanAttack)
+                if (P1SliceDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                 {
+                    P1Action = true;
                     P2Slice.SetActive(true);
+                    P1Animator.SetBool("Damaged", true);
 
                     yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
                     P2Slice.SetActive(false);
+                    P1Animator.SetBool("Damaged", false);
+
+                    yield return new WaitForSeconds(0.7f);
+                    P1Action = false;
                 }
                 else
                 {
                     P2SliceFake.SetActive(true); // "Fake" means that the slice visually looks the same, but doesn't work mechanically
-
 
                     yield return new WaitForSeconds(0.1f);
                     P2SliceFake.SetActive(false);
@@ -411,14 +438,13 @@ public class PlayerController : MonoBehaviour
                 P2SliceFake.SetActive(true);
                 P1SliceDamage.otherPlayerCanAttack = true;
 
-                meshP2.material.color = Color.yellow; // Placeholder coloring
-                // P2Animator.SetBool("IsStunned", true);
+                P2Animator.SetBool("IsStunned", true);
 
                 yield return new WaitForSeconds(0.1f);
                 P2SliceFake.SetActive(false);
 
                 yield return new WaitForSeconds(1.5f); // Time value is stunned period
-                // P2Animator.SetBool("IsStunned", false);
+                P2Animator.SetBool("IsStunned", false);
                 Player2SliceEnd();
             }
             else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
@@ -468,11 +494,13 @@ public class PlayerController : MonoBehaviour
 
         IEnumerator P2DamageFlicker()
         {
+            yield return new WaitForSeconds(1.3f);
+
             for (int j = 0; j < 7; j++)
             {
-                meshP2.material.color = new Color(0, 0, 1, 0.5f);
+                player2.SetActive(false);
                 yield return new WaitForSeconds(0.1f);
-                meshP2.material.color = Color.blue;
+                player2.SetActive(true);
                 yield return new WaitForSeconds(0.1f);
             }
         }
@@ -482,10 +510,10 @@ public class PlayerController : MonoBehaviour
     void Player1PunchEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsPunching", false);
+        P1Animator.SetBool("IsPunching", false);
 
         // print("p1 punch end");
-        meshP1.material.color = Color.red;
+        player1.SetActive(true);
         P2PunchDamage.otherPlayerCanAttack = true;
         P1PunchDamage.otherPlayerCanAttack = true;
     }
@@ -499,10 +527,10 @@ public class PlayerController : MonoBehaviour
     void Player1SliceEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsSlicing", false);
+        P1Animator.SetBool("IsSlicing", false);
 
         // print("p1 slice end");
-        meshP1.material.color = Color.red;
+        player1.SetActive(true);
         P2SliceDamage.otherPlayerCanAttack = true;
         P1SliceDamage.otherPlayerCanAttack = true;
     }
@@ -519,10 +547,10 @@ public class PlayerController : MonoBehaviour
     void Player2PunchEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsPunching", false);
+        P2Animator.SetBool("IsPunching", false);
 
         // print("p2 punch end");
-        meshP2.material.color = Color.blue;
+        player2.SetActive(true);
         P1PunchDamage.otherPlayerCanAttack = true;
         P2PunchDamage.otherPlayerCanAttack = true;
     }
@@ -539,7 +567,7 @@ public class PlayerController : MonoBehaviour
         P2Animator.SetBool("IsSlicing", false);
 
         // print("p2 slice end");
-        meshP2.material.color = Color.blue;
+        player2.SetActive(true);
         P1SliceDamage.otherPlayerCanAttack = true;
         P2SliceDamage.otherPlayerCanAttack = true;
     }

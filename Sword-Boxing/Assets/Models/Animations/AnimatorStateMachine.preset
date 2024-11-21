@@ -1,0 +1,191 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AnimatorStateMachine
+  m_TargetType:
+    m_NativeTypeID: 1107
+    m_ManagedTypePPtr: {fileID: 0}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[0].m_State
+    value: 
+    objectReference: {fileID: 1122539002478154910, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[0].m_Position.x
+    value: 290
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[0].m_Position.y
+    value: 120
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[0].m_Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[1].m_State
+    value: 
+    objectReference: {fileID: -4940963351677011926, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[1].m_Position.x
+    value: 290
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[1].m_Position.y
+    value: -90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[1].m_Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[2].m_State
+    value: 
+    objectReference: {fileID: -3031687186616654345, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[2].m_Position.x
+    value: 170
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[2].m_Position.y
+    value: -10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[2].m_Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[3].m_State
+    value: 
+    objectReference: {fileID: -1437274506415871621, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[3].m_Position.x
+    value: 290
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[3].m_Position.y
+    value: 340
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[3].m_Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[4].m_State
+    value: 
+    objectReference: {fileID: 3682564975172602504, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[4].m_Position.x
+    value: 170
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[4].m_Position.y
+    value: 250
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[4].m_Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[5].m_State
+    value: 
+    objectReference: {fileID: -1717884322358969655, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[5].m_Position.x
+    value: -40
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[5].m_Position.y
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStates.Array.data[5].m_Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ChildStateMachines.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_AnyStateTransitions.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_AnyStateTransitions.Array.data[0]
+    value: 
+    objectReference: {fileID: 3775824757353839207, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: m_EntryTransitions.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_StateMachineTransitions.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_StateMachineBehaviours.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_AnyStatePosition.x
+    value: -20
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_AnyStatePosition.y
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_AnyStatePosition.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EntryPosition.x
+    value: -20
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EntryPosition.y
+    value: 190
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EntryPosition.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ExitPosition.x
+    value: 800
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ExitPosition.y
+    value: 120
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ExitPosition.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ParentStateMachinePosition.x
+    value: 800
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ParentStateMachinePosition.y
+    value: 20
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ParentStateMachinePosition.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_DefaultState
+    value: 
+    objectReference: {fileID: 1122539002478154910, guid: 8945af2fba72d8f4ebd2806f7893181a, type: 2}
+  m_ExcludedProperties: []
