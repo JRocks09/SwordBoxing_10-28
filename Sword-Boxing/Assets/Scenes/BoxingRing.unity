@@ -998,11 +998,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &638468169 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -6664839552874652836, guid: c50008a174829864e95758fde086ddac, type: 3}
-  m_PrefabInstance: {fileID: 1310329393}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &652507237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,9 +1321,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d697eb3ce076abd4981d17a41130838c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1Mesh: {fileID: 638468169}
+  player1Mesh: {fileID: 2085832277}
   player2Mesh: {fileID: 1026003568}
-  P1Main: {fileID: 1654282234}
+  P1Main: {fileID: 2085832277}
   P2Main: {fileID: 602248396}
   P1Punch: {fileID: 1780007986}
   P2Punch: {fileID: 1066829130}
@@ -1356,7 +1351,7 @@ MonoBehaviour:
   P2SliceDamage: {fileID: 962715336}
   P1Health: {fileID: 1374598509}
   P2Health: {fileID: 1252884446}
-  P1Animator: {fileID: 1654282236}
+  P1Animator: {fileID: 2085832279}
   P2Animator: {fileID: 602248399}
 --- !u!4 &800787355
 Transform:
@@ -2571,7 +2566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e19d5fea537d0409ae9e7e83faa863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 20
   healthBar: {fileID: 1516844369}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
@@ -2658,6 +2653,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c50008a174829864e95758fde086ddac, type: 3}
       propertyPath: m_Name
       value: Kachujin
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c50008a174829864e95758fde086ddac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3130,7 +3129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e19d5fea537d0409ae9e7e83faa863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 20
   healthBar: {fileID: 1154092107}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
