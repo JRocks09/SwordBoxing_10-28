@@ -6,8 +6,11 @@ public class PlayerController : MonoBehaviour
 {
 #pragma warning disable IDE0051 // Remove unused private members
 
-    public GameObject player1;
-    public GameObject player2;
+    public GameObject player1Mesh;
+    public GameObject player2Mesh;
+
+    public GameObject P1Main;
+    public GameObject P2Main;
 
     public GameObject P1Punch;
     public GameObject P2Punch;
@@ -64,13 +67,17 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // Variable Initialization
+        var P1Pos = P1Main.transform.position;
+        var P2Pos = P2Main.transform.position;
+
         // Quit Application
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
 
-
+        // Restart Game on Finish
         if (P1Health.winState || P2Health.winState)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -79,6 +86,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        // Player Action Logic
         else
         {
             // ~ Player 1 Controls ~
@@ -164,7 +172,7 @@ public class PlayerController : MonoBehaviour
                 // Animation
                 P1Animator.SetBool("IsDodging", true);
 
-                yield return new WaitForSeconds(0.3f); // Time [before] player is in dodging state
+                yield return new WaitForSeconds(0.2f); // Time [before] player is in dodging state
                 isP1Dodging = true;
                 P1Dodge.SetActive(true);
 
@@ -256,6 +264,7 @@ public class PlayerController : MonoBehaviour
 
                 // Animation
                 P1Animator.SetBool("IsDeflecting", true);
+                P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
 
                 yield return new WaitForSeconds(0.2f); // Time [before] player is in deflecting state
                 isP1Deflecting = true;
@@ -267,6 +276,9 @@ public class PlayerController : MonoBehaviour
                 isP1Deflecting = false;
                 P1Deflect.SetActive(false);
                 Player1DeflectEnd();
+
+                yield return new WaitForSeconds(0.15f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
             }
 
             // Damage Flicker (I-Frames)
@@ -283,9 +295,9 @@ public class PlayerController : MonoBehaviour
                 {
                     for (int i = 0; i < 7; i++)
                     {
-                        player1.SetActive(false);
+                        player1Mesh.SetActive(false);
                         yield return new WaitForSeconds(0.1f);
-                        player1.SetActive(true);
+                        player1Mesh.SetActive(true);
                         yield return new WaitForSeconds(0.1f);
                     }
                 }
@@ -484,8 +496,9 @@ public class PlayerController : MonoBehaviour
 
                 // Animation
                 P2Animator.SetBool("IsDeflecting", true);
+                P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
 
-                yield return new WaitForSeconds(0.3f); // Time [before] player is in deflecting state
+                yield return new WaitForSeconds(0.2f); // Time [before] player is in deflecting state
                 isP2Deflecting = true;
                 P2Deflect.SetActive(true);
 
@@ -495,6 +508,9 @@ public class PlayerController : MonoBehaviour
                 isP2Deflecting = false;
                 P2Deflect.SetActive(false);
                 Player2DeflectEnd();
+
+                yield return new WaitForSeconds(0.15f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
             }
 
             // Damage Flicker (I-Frames)
@@ -512,25 +528,29 @@ public class PlayerController : MonoBehaviour
                 {
                     for (int j = 0; j < 7; j++)
                     {
-                        player2.SetActive(false);
+                        player2Mesh.SetActive(false);
                         yield return new WaitForSeconds(0.1f);
-                        player2.SetActive(true);
+                        player2Mesh.SetActive(true);
                         yield return new WaitForSeconds(0.1f);
                     }
                 }
             }
         }
         
+
         // P1 Defeated
         if (P1Health.winState && P1WinFunction)
         {
             StartCoroutine(Player1Defeated());
             P1WinFunction = false;
         }
+
         IEnumerator Player1Defeated()
         {
             yield return new WaitForSeconds(0.5f);
 
+            P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
+            P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
             P1Animator.SetBool("Defeated", true);
             P2Animator.SetBool("GameWon", true);
 
@@ -538,6 +558,23 @@ public class PlayerController : MonoBehaviour
 
             P1Animator.SetBool("Defeated", false);
             P2Animator.SetBool("GameWon", false);
+
+            // Fixes for Character Animation Inconcistency
+            if (P1Main.name == "Brute")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
+            }
+            else if (P1Main.name == "Ninja")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.3f, P1Pos.z);
+            }
+            else if (P1Main.name == "Kachujin")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.1f, P1Pos.z);
+            }
         }
 
         // P2 Defeated
@@ -546,10 +583,13 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Player2Defeated());
             P2WinFunction = false;
         }
+
         IEnumerator Player2Defeated()
         {
             yield return new WaitForSeconds(0.5f);
 
+            P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
+            P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
             P2Animator.SetBool("Defeated", true);
             P1Animator.SetBool("GameWon", true);
 
@@ -557,8 +597,26 @@ public class PlayerController : MonoBehaviour
 
             P2Animator.SetBool("Defeated", false);
             P1Animator.SetBool("GameWon", false);
+
+            // Fixes for Character Animation Inconcistency
+            if (P2Main.name == "Brute")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
+            }
+            else if(P2Main.name == "Ninja")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.3f, P2Pos.z);
+            }
+            else if (P2Main.name == "Kachujin")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.1f, P2Pos.z);
+            }
         }
     }
+
 
     // Player 1 Void Functions
     void Player1PunchEnd()
@@ -567,7 +625,7 @@ public class PlayerController : MonoBehaviour
         P1Animator.SetBool("IsPunching", false);
 
         // print("p1 punch end");
-        player1.SetActive(true);
+        player1Mesh.SetActive(true);
         P2PunchDamage.otherPlayerCanAttack = true;
         P1PunchDamage.otherPlayerCanAttack = true;
     }
@@ -584,7 +642,7 @@ public class PlayerController : MonoBehaviour
         P1Animator.SetBool("IsSlicing", false);
 
         // print("p1 slice end");
-        player1.SetActive(true);
+        player1Mesh.SetActive(true);
         P2SliceDamage.otherPlayerCanAttack = true;
         P1SliceDamage.otherPlayerCanAttack = true;
     }
@@ -604,7 +662,7 @@ public class PlayerController : MonoBehaviour
         P2Animator.SetBool("IsPunching", false);
 
         // print("p2 punch end");
-        player2.SetActive(true);
+        player2Mesh.SetActive(true);
         P1PunchDamage.otherPlayerCanAttack = true;
         P2PunchDamage.otherPlayerCanAttack = true;
     }
@@ -621,7 +679,7 @@ public class PlayerController : MonoBehaviour
         P2Animator.SetBool("IsSlicing", false);
 
         // print("p2 slice end");
-        player2.SetActive(true);
+        player2Mesh.SetActive(true);
         P1SliceDamage.otherPlayerCanAttack = true;
         P2SliceDamage.otherPlayerCanAttack = true;
     }
