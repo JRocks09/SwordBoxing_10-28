@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 
     public GameObject player1Mesh;
     public GameObject player2Mesh;
+    public GameObject player1SwordMesh;
+    public GameObject player2SwordMesh;
 
     public GameObject P1Main;
     public GameObject P2Main;
@@ -31,12 +33,12 @@ public class PlayerController : MonoBehaviour
     public GameObject P2Deflect;
     [HideInInspector] public bool isP1Deflecting;
     [HideInInspector] public bool isP2Deflecting;
+    private bool endDeflect;
 
     [HideInInspector] public bool P1flickering;
     [HideInInspector] public bool P2flickering;
     [HideInInspector] public bool P1WinFunction;
     [HideInInspector] public bool P2WinFunction;
-
 
 
     private bool P1Action;
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
 
         P1WinFunction = true;
         P2WinFunction = true;
+        endDeflect = false;
     }
 
 
@@ -89,7 +92,6 @@ public class PlayerController : MonoBehaviour
         // Player Action Logic
         else
         {
-            print(isP1Deflecting);
             // ~ Player 1 Controls ~
 
             // Punch
@@ -301,8 +303,10 @@ public class PlayerController : MonoBehaviour
                     for (int i = 0; i < 7; i++)
                     {
                         player1Mesh.SetActive(false);
+                        player1SwordMesh.SetActive(false);
                         yield return new WaitForSeconds(0.1f);
                         player1Mesh.SetActive(true);
+                        player1SwordMesh.SetActive(true);
                         yield return new WaitForSeconds(0.1f);
                     }
                 }
@@ -538,8 +542,10 @@ public class PlayerController : MonoBehaviour
                     for (int j = 0; j < 7; j++)
                     {
                         player2Mesh.SetActive(false);
+                        player2SwordMesh.SetActive(false);
                         yield return new WaitForSeconds(0.1f);
                         player2Mesh.SetActive(true);
+                        player2SwordMesh.SetActive(true);
                         yield return new WaitForSeconds(0.1f);
                     }
                 }
@@ -558,19 +564,16 @@ public class PlayerController : MonoBehaviour
         {
             if (isP1Deflecting)
             {
-                yield return new WaitForSeconds(1);
-                print("success");
-                P1Main.transform.position = new Vector3(P1Pos.x-3, P1Pos.y-3, P1Pos.z-3);
+                endDeflect = true;
+                yield return new WaitForSeconds(0.5f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
             }
-
-            yield return new WaitForSeconds(2);
-
-            if (!isP1Deflecting)
+            else
             {
-                yield return new WaitForSeconds(0.1f);
-                print("bug");
+                yield return new WaitForSeconds(0.5f);
                 P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
             }
+
             P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
             P1Animator.SetBool("Defeated", true);
             P2Animator.SetBool("GameWon", true);
@@ -583,18 +586,47 @@ public class PlayerController : MonoBehaviour
             // Fixes for Character Animation Inconcistency
             if (P1Main.name == "Brute")
             {
-                yield return new WaitForSeconds(2.25f);
-                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
+                if(endDeflect)
+                {
+
+                }
+                else
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
+                }
             }
             else if (P1Main.name == "Ninja")
             {
-                yield return new WaitForSeconds(2.25f);
-                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.3f, P1Pos.z);
+                if (endDeflect)
+                {
+                    // Edit this later
+                }
+                else
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.3f, P1Pos.z);
+                }
             }
             else if (P1Main.name == "Kachujin")
             {
-                yield return new WaitForSeconds(2.25f);
-                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.1f, P1Pos.z);
+                if (endDeflect)
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y - 0.2f, P1Pos.z);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.1f, P1Pos.z);
+                }
+            }
+            else if (P1Main.name == "Wrestler")
+            {
+                if (endDeflect)
+                {
+                    // Edit this later
+                }
             }
         }
 
@@ -607,10 +639,19 @@ public class PlayerController : MonoBehaviour
 
         IEnumerator Player2Defeated()
         {
-            yield return new WaitForSeconds(0.5f);
+            if (isP2Deflecting)
+            {
+                endDeflect = true;
+                yield return new WaitForSeconds(0.5f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+                P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
+            }
 
             P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
-            P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
             P2Animator.SetBool("Defeated", true);
             P1Animator.SetBool("GameWon", true);
 
@@ -622,18 +663,48 @@ public class PlayerController : MonoBehaviour
             // Fixes for Character Animation Inconsistency
             if (P2Main.name == "Brute")
             {
-                yield return new WaitForSeconds(2.25f);
-                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
+                if (endDeflect)
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y - 0.2f, P2Pos.z);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
+                }
             }
-            else if(P2Main.name == "Ninja")
+            else if (P2Main.name == "Ninja")
             {
-                yield return new WaitForSeconds(2.25f);
-                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.3f, P2Pos.z);
+                if (endDeflect)
+                {
+                    // Edit this later
+                }
+                else
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.3f, P2Pos.z);
+                }
             }
             else if (P2Main.name == "Kachujin")
             {
-                yield return new WaitForSeconds(2.25f);
-                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.1f, P2Pos.z);
+                if (endDeflect)
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y - 0.2f, P2Pos.z);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(2.25f);
+                    P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.1f, P2Pos.z);
+                }
+            }
+            else if (P2Main.name == "Wrestler")
+            {
+                if (endDeflect)
+                {
+                    // Edit this later
+                }
             }
         }
     }
