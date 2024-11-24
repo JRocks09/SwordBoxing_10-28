@@ -48,8 +48,6 @@ public class playerHealth : MonoBehaviour
             // Win State
             winState = true;
 
-            // yield return new WaitForSeconds(1.5f);
-
             winTextObject.SetActive(true);
             if (name == "Player1")
             {
