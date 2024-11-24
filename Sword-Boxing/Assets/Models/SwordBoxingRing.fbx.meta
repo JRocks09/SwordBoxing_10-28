@@ -3,7 +3,32 @@ guid: e40a309700c9154449a9c0ee1caea6f8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Post
+    second: {fileID: 2100000, guid: 1caf88faad8332845ba259fa9b1bc2ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ring Sides
+    second: {fileID: 2100000, guid: 8c5425b41f7f6f944ab3a5183c963460, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rope
+    second: {fileID: 2100000, guid: c0b7ea949dac70d4cb67ed2441b4aa46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stairs
+    second: {fileID: 2100000, guid: 34d3667f41181c04b907f7911335530b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: matati mat
+    second: {fileID: 2100000, guid: 1fc40c3fc08a5974fac29708e2ed98b8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

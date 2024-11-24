@@ -89,6 +89,7 @@ public class PlayerController : MonoBehaviour
         // Player Action Logic
         else
         {
+            print(isP1Deflecting);
             // ~ Player 1 Controls ~
 
             // Punch
@@ -114,6 +115,9 @@ public class PlayerController : MonoBehaviour
                     // Punch Successful (Not attacked by the other player before this punch's impact)
                     if (P2PunchDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
                     {
+                        P2Animator.SetBool("IsStunned", false);
+
+                        yield return new WaitForSeconds(0.01f);
                         P2Action = true;
                         P1Punch.SetActive(true);
                         P2Animator.SetBool("Damaged", true);
@@ -207,6 +211,9 @@ public class PlayerController : MonoBehaviour
                     // Slice Successful (Not attacked by the other player before this slice's impact)
                     if (P2SliceDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
                     {
+                        P2Animator.SetBool("IsStunned", false);
+
+                        yield return new WaitForSeconds(0.01f);
                         P2Action = true;
                         P1Slice.SetActive(true);
                         P2Animator.SetBool("Damaged", true);
@@ -270,14 +277,12 @@ public class PlayerController : MonoBehaviour
                 isP1Deflecting = true;
                 P1Deflect.SetActive(true);
 
-                yield return new WaitForSeconds(0.5f); // Time [when] player is in deflecting state
+                yield return new WaitForSeconds(0.65f); // Time [when] player is in deflecting state
 
                 // End of Deflect
                 isP1Deflecting = false;
                 P1Deflect.SetActive(false);
                 Player1DeflectEnd();
-
-                yield return new WaitForSeconds(0.15f);
                 P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
             }
 
@@ -346,6 +351,9 @@ public class PlayerController : MonoBehaviour
                     // Punch Successful (Not attacked by the other player before this punch's impact)
                     if (P1PunchDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                     {
+                        P1Animator.SetBool("IsStunned", false);
+
+                        yield return new WaitForSeconds(0.01f);
                         P1Action = true;
                         P2Punch.SetActive(true);
                         P1Animator.SetBool("Damaged", true);
@@ -439,6 +447,9 @@ public class PlayerController : MonoBehaviour
                     // Slice Successful (Not attacked by the other player before this slice's impact)
                     if (P1SliceDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                     {
+                        P1Animator.SetBool("IsStunned", false);
+
+                        yield return new WaitForSeconds(0.1f);
                         P1Action = true;
                         P2Slice.SetActive(true);
                         P1Animator.SetBool("Damaged", true);
@@ -502,14 +513,12 @@ public class PlayerController : MonoBehaviour
                 isP2Deflecting = true;
                 P2Deflect.SetActive(true);
 
-                yield return new WaitForSeconds(0.5f); // Time [when] player is in deflecting state
+                yield return new WaitForSeconds(0.65f); // Time [when] player is in deflecting state
 
                 // End of Deflect
                 isP2Deflecting = false;
                 P2Deflect.SetActive(false);
                 Player2DeflectEnd();
-
-                yield return new WaitForSeconds(0.15f);
                 P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
             }
 
@@ -547,9 +556,21 @@ public class PlayerController : MonoBehaviour
 
         IEnumerator Player1Defeated()
         {
-            yield return new WaitForSeconds(0.5f);
+            if (isP1Deflecting)
+            {
+                yield return new WaitForSeconds(1);
+                print("success");
+                P1Main.transform.position = new Vector3(P1Pos.x-3, P1Pos.y-3, P1Pos.z-3);
+            }
 
-            P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
+            yield return new WaitForSeconds(2);
+
+            if (!isP1Deflecting)
+            {
+                yield return new WaitForSeconds(0.1f);
+                print("bug");
+                P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
+            }
             P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
             P1Animator.SetBool("Defeated", true);
             P2Animator.SetBool("GameWon", true);
@@ -598,7 +619,7 @@ public class PlayerController : MonoBehaviour
             P2Animator.SetBool("Defeated", false);
             P1Animator.SetBool("GameWon", false);
 
-            // Fixes for Character Animation Inconcistency
+            // Fixes for Character Animation Inconsistency
             if (P2Main.name == "Brute")
             {
                 yield return new WaitForSeconds(2.25f);

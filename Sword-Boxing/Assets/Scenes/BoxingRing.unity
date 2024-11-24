@@ -606,7 +606,7 @@ Animator:
   m_GameObject: {fileID: 435368793}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8c64672b2f03f464d91b0e9993500c40, type: 2}
+  m_Controller: {fileID: 9100000, guid: 81c7adf9859bfa84a806d9295cb1ec09, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1074,7 +1074,7 @@ Animator:
   m_GameObject: {fileID: 602248396}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8c64672b2f03f464d91b0e9993500c40, type: 2}
+  m_Controller: {fileID: 9100000, guid: 81c7adf9859bfa84a806d9295cb1ec09, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1323,7 +1323,7 @@ GameObject:
   m_Component:
   - component: {fileID: 780915000}
   m_Layer: 0
-  m_Name: PlayerCollisions
+  m_Name: PlayerCollisionsandStats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2737,7 +2737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e19d5fea537d0409ae9e7e83faa863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 40
+  health: 100
   healthBar: {fileID: 1516844369}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
@@ -3195,7 +3195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e19d5fea537d0409ae9e7e83faa863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 40
+  health: 100
   healthBar: {fileID: 1154092107}
   winText: {fileID: 652507238}
   winTextObject: {fileID: 652507237}
