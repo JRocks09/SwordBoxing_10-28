@@ -264,7 +264,7 @@ public class PlayerController : MonoBehaviour
 
                 // Animation
                 P1Animator.SetBool("IsDeflecting", true);
-                P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
+                P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.325f), P1Pos.z);
 
                 yield return new WaitForSeconds(0.2f); // Time [before] player is in deflecting state
                 isP1Deflecting = true;
@@ -496,7 +496,7 @@ public class PlayerController : MonoBehaviour
 
                 // Animation
                 P2Animator.SetBool("IsDeflecting", true);
-                P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
+                P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.325f), P2Pos.z);
 
                 yield return new WaitForSeconds(0.2f); // Time [before] player is in deflecting state
                 isP2Deflecting = true;
