@@ -1,12 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject player1;
-    public GameObject player2;
+#pragma warning disable IDE0051 // Remove unused private members
+
+    public GameObject player1Mesh;
+    public GameObject player2Mesh;
+
+    public GameObject P1Main;
+    public GameObject P2Main;
 
     public GameObject P1Punch;
     public GameObject P2Punch;
@@ -28,488 +32,624 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool isP1Deflecting;
     [HideInInspector] public bool isP2Deflecting;
 
-    [HideInInspector] public bool flickering;
+    [HideInInspector] public bool P1flickering;
+    [HideInInspector] public bool P2flickering;
+    [HideInInspector] public bool P1WinFunction;
+    [HideInInspector] public bool P2WinFunction;
 
-    MeshRenderer meshP1;
-    MeshRenderer meshP2;
+
 
     private bool P1Action;
     private bool P2Action;
 
     public Damage P1PunchDamage;
     public Damage P2PunchDamage;
-
     public Damage P1SliceDamage;
     public Damage P2SliceDamage;
 
+    public playerHealth P1Health;
+    public playerHealth P2Health;
 
-    // public Animator P1Animator;
-    // public Animator P2Animator;
+    public Animator P1Animator;
+    public Animator P2Animator;
 
     void Start()
     {
-        meshP1 = player1.GetComponent<MeshRenderer>();
-        meshP2 = player2.GetComponent<MeshRenderer>();
-        // P1Animator = player1.GetComponent<Animator>();
-        // P2Animator = player2.GetComponent<Animator>(); 
-
         P1PunchDamage.otherPlayerCanAttack = true;
         P2PunchDamage.otherPlayerCanAttack = true;
         P1SliceDamage.otherPlayerCanAttack = true;
         P2SliceDamage.otherPlayerCanAttack = true;
+
+        P1WinFunction = true;
+        P2WinFunction = true;
     }
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene("BoxingRing");
-        }
+        // Variable Initialization
+        var P1Pos = P1Main.transform.position;
+        var P2Pos = P2Main.transform.position;
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        // Quit Application
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-        
-        // ~ Player 1 Controls ~
 
-        // Punch
-        if (Input.GetKeyDown(KeyCode.W) && !P1Action)
+        // Restart Game on Finish
+        if (P1Health.winState || P2Health.winState)
         {
-            StartCoroutine(P1PunchFunction());
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene("BoxingRing");
+            }
         }
 
-        IEnumerator P1PunchFunction()
+        // Player Action Logic
+        else
         {
-            P1Action = true;
-            // print("p1 punch start");
+            // ~ Player 1 Controls ~
 
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsPunching", true); */
-
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of punch to impact
-
-            if (!isP2Dodging)
+            // Punch
+            if (Input.GetKeyDown(KeyCode.E) && !P1Action)
             {
-                Invoke("Player1PunchEnd", 0.4f); // Time value is length from impact to end of punch
+                StartCoroutine(P1PunchFunction());
+            }
 
-                // Punch Successful (Not attacked by the other player before this punch's impact)
-                if (P2PunchDamage.otherPlayerCanAttack)
+            IEnumerator P1PunchFunction()
+            {
+                P1Action = true;
+                // print("p1 punch start");
+
+                // Animation
+                P1Animator.SetBool("IsPunching", true);
+
+                yield return new WaitForSeconds(0.6f); // Time value is length from start of punch to impact
+
+                if (!isP2Dodging)
                 {
-                    P1Punch.SetActive(true);
+                    Invoke("Player1PunchEnd", 0.8f); // Time value is length from impact to end of punch
 
-                    yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
-                    P1Punch.SetActive(false);
+                    // Punch Successful (Not attacked by the other player before this punch's impact)
+                    if (P2PunchDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
+                    {
+                        P2Action = true;
+                        P1Punch.SetActive(true);
+                        P2Animator.SetBool("Damaged", true);
+
+                        yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
+                        P1Punch.SetActive(false);
+                        P2Animator.SetBool("Damaged", false);
+
+                        yield return new WaitForSeconds(0.7f);
+                        P2Action = false;
+                    }
+                    else
+                    {
+                        P1PunchFake.SetActive(true); // "Fake" means that the punch visually looks the same, but doesn't work mechanically
+
+                        yield return new WaitForSeconds(0.1f);
+                        P1PunchFake.SetActive(false);
+                    }
                 }
-                else
+                else if (isP2Dodging && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                 {
-                    P1PunchFake.SetActive(true); // "Fake" means that the punch visually looks the same, but doesn't work mechanically
+                    // Punch was unsuccessful, player stunned
+                    P1PunchFake.SetActive(true);
+                    P2PunchDamage.otherPlayerCanAttack = true;
 
+                    P1Animator.SetBool("IsStunned", true);
+
+                    yield return new WaitForSeconds(0.1f);
+                    P1PunchFake.SetActive(false);
+
+                    yield return new WaitForSeconds(1.5f); // Time value is stunned period
+                    P1Animator.SetBool("IsStunned", false);
+                    Player1PunchEnd();
+                }
+                else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+                {
+                    Invoke("Player1PunchEnd", 0.8f);
+                    P1PunchFake.SetActive(true);
 
                     yield return new WaitForSeconds(0.1f);
                     P1PunchFake.SetActive(false);
                 }
             }
-            else if (isP2Dodging && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
+
+            // Dodge
+            if (Input.GetKeyDown(KeyCode.W) && !P1Action)
             {
-                // Punch was unsuccessful, player stunned
-                P1PunchFake.SetActive(true);
-                P2PunchDamage.otherPlayerCanAttack = true;
-
-                meshP1.material.color = Color.yellow; // Placeholder coloring
-                // P1Animator.SetBool("IsStunned", true);
-
-                yield return new WaitForSeconds(0.1f);
-                P1PunchFake.SetActive(false);
-
-                yield return new WaitForSeconds(1); // Time value is stunned period
-                // P1Animator.SetBool("IsStunned", false);
-                Player1PunchEnd();
+                StartCoroutine(P1DodgeFunction());
             }
-            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+
+            IEnumerator P1DodgeFunction()
             {
-                P1PunchFake.SetActive(true);
+                P1Action = true;
+                // print("p1 dodge start");
 
-                yield return new WaitForSeconds(0.1f);
-                P1PunchFake.SetActive(false);
+                // Animation
+                P1Animator.SetBool("IsDodging", true);
 
-                yield return new WaitForSeconds(0.3f);
-                P1Action = false;
+                yield return new WaitForSeconds(0.2f); // Time [before] player is in dodging state
+                isP1Dodging = true;
+                P1Dodge.SetActive(true);
+
+                yield return new WaitForSeconds(1); // Time [when] player is in dodging state
+
+                // End of Dodge
+                isP1Dodging = false;
+                P1Dodge.SetActive(false);
+                Player1DodgeEnd();
             }
-        }
 
-        // Dodge
-        if (Input.GetKeyDown(KeyCode.Q) && !P1Action)
-        {
-            StartCoroutine(P1DodgeFunction());
-        }
-
-        IEnumerator P1DodgeFunction()
-        {
-            P1Action = true;
-            // print("p1 dodge start");
-
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsDodging", true); */
-
-            yield return new WaitForSeconds(0.3f); // Time [before] player is in dodging state
-            isP1Dodging = true;
-            P1Dodge.SetActive(true);
-
-            yield return new WaitForSeconds(0.5f); // Time [when] player is in dodging state
-
-            // End of Dodge
-            isP1Dodging = false;
-            P1Dodge.SetActive(false);
-            Player1DodgeEnd();
-        }
-
-        // Slice
-        if (Input.GetKeyDown(KeyCode.S) && !P1Action)
-        {
-            StartCoroutine(P1SliceFunction());
-        }
-
-        IEnumerator P1SliceFunction()
-        {
-            P1Action = true;
-            // print("p1 slice start");
-
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsSlicing", true); */
-
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of slice to impact
-
-            if (!isP2Deflecting)
+            // Slice
+            if (Input.GetKeyDown(KeyCode.S) && !P1Action)
             {
-                Invoke("Player1SliceEnd", 0.4f); // Time value is length from impact to end of slice
+                StartCoroutine(P1SliceFunction());
+            }
 
-                // Slice Successful (Not attacked by the other player before this slice's impact)
-                if (P2SliceDamage.otherPlayerCanAttack)
+            IEnumerator P1SliceFunction()
+            {
+                P1Action = true;
+                // print("p1 slice start");
+
+                // Animation
+                P1Animator.SetBool("IsSlicing", true);
+
+                yield return new WaitForSeconds(0.5f); // Time value is length from start of slice to impact
+
+                if (!isP2Deflecting)
                 {
-                    P1Slice.SetActive(true);
+                    Invoke("Player1SliceEnd", 0.8f); // Time value is length from impact to end of slice
 
-                    yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
-                    P1Slice.SetActive(false);
+                    // Slice Successful (Not attacked by the other player before this slice's impact)
+                    if (P2SliceDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
+                    {
+                        P2Action = true;
+                        P1Slice.SetActive(true);
+                        P2Animator.SetBool("Damaged", true);
+
+                        yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
+                        P1Slice.SetActive(false);
+                        P2Animator.SetBool("Damaged", false);
+
+                        yield return new WaitForSeconds(0.7f);
+                        P2Action = false;
+                    }
+                    else
+                    {
+                        P1SliceFake.SetActive(true); // "Fake" means that the slice visually looks the same, but doesn't work mechanically
+
+                        yield return new WaitForSeconds(0.1f);
+                        P1SliceFake.SetActive(false);
+                    }
                 }
-                else
+                else if (isP2Deflecting && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                 {
-                    P1SliceFake.SetActive(true); // "Fake" means that the slice visually looks the same, but doesn't work mechanically
+                    // Slice was unsuccessful, player stunned
+                    P1SliceFake.SetActive(true);
+                    P2SliceDamage.otherPlayerCanAttack = true;
 
+                    P1Animator.SetBool("IsStunned", true);
+
+                    yield return new WaitForSeconds(0.1f);
+                    P1SliceFake.SetActive(false);
+
+                    yield return new WaitForSeconds(1.5f); // Time value is stunned period
+                    P1Animator.SetBool("IsStunned", false);
+                    Player1SliceEnd();
+                }
+                else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+                {
+                    Invoke("Player1PunchEnd", 0.8f);
+                    P1SliceFake.SetActive(true);
 
                     yield return new WaitForSeconds(0.1f);
                     P1SliceFake.SetActive(false);
                 }
             }
-            else if (isP2Deflecting && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
+
+            // Deflect
+            if (Input.GetKeyDown(KeyCode.A) && !P1Action)
             {
-                // Slice was unsuccessful, player stunned
-                P1SliceFake.SetActive(true);
-                P2SliceDamage.otherPlayerCanAttack = true;
-
-                meshP1.material.color = Color.yellow; // Placeholder coloring
-                // P1Animator.SetBool("IsStunned", true);
-
-                yield return new WaitForSeconds(0.1f);
-                P1SliceFake.SetActive(false);
-
-                yield return new WaitForSeconds(1); // Time value is stunned period
-                // P1Animator.SetBool("IsStunned", false);
-                Player1SliceEnd();
+                StartCoroutine(P1DeflectFunction());
             }
-            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+
+            IEnumerator P1DeflectFunction()
             {
-                P1SliceFake.SetActive(true);
+                P1Action = true;
+                // print("p1 deflect start");
 
-                yield return new WaitForSeconds(0.1f);
-                P1SliceFake.SetActive(false);
+                // Animation
+                P1Animator.SetBool("IsDeflecting", true);
+                P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
 
-                yield return new WaitForSeconds(0.3f);
-                P1Action = false;
+                yield return new WaitForSeconds(0.2f); // Time [before] player is in deflecting state
+                isP1Deflecting = true;
+                P1Deflect.SetActive(true);
+
+                yield return new WaitForSeconds(0.5f); // Time [when] player is in deflecting state
+
+                // End of Deflect
+                isP1Deflecting = false;
+                P1Deflect.SetActive(false);
+                Player1DeflectEnd();
+
+                yield return new WaitForSeconds(0.15f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
             }
-        }
 
-        // Deflect
-        if (Input.GetKeyDown(KeyCode.A) && !P1Action)
-        {
-            StartCoroutine(P1DeflectFunction());
-        }
-
-        IEnumerator P1DeflectFunction()
-        {
-            P1Action = true;
-            // print("p1 deflect start");
-
-            /* Animation will be triggered here
-            P1Animator.SetBool("IsDeflecting", true); */
-
-            yield return new WaitForSeconds(0.3f); // Time [before] player is in deflecting state
-            isP1Deflecting = true;
-            P1Deflect.SetActive(true);
-
-            yield return new WaitForSeconds(0.5f); // Time [when] player is in deflecting state
-
-            // End of Deflect
-            isP1Deflecting = false;
-            P1Deflect.SetActive(false);
-            Player1DeflectEnd();
-        }
-
-        // Damage Flicker (I-Frames)
-        if (flickering && (P2SliceDamage.playerInvincible || P2PunchDamage.playerInvincible))
-        {
-            StartCoroutine(P1DamageFlicker());
-            flickering = false;
-        }
-        
-        IEnumerator P1DamageFlicker()
-        {
-            for (int i = 0; i < 7; i++)
+            // Damage Flicker (I-Frames)
+            if (P1flickering && (P2SliceDamage.playerInvincible || P2PunchDamage.playerInvincible))
             {
-                meshP1.material.color = new Color(1, 0, 0, 0.5f);
-                yield return new WaitForSeconds(0.1f);
-                meshP1.material.color = Color.red;
-                yield return new WaitForSeconds(0.1f);
+                StartCoroutine(P1DamageFlicker());
+                P1flickering = false;
             }
-        }
 
-        // --------------------------------------------------
-
-        // ~ Player 2 Controls ~
-
-        // Punch
-        if (Input.GetKeyDown(KeyCode.O) && !P2Action)
-        {
-            StartCoroutine(P2PunchFunction());
-        }
-
-        IEnumerator P2PunchFunction()
-        {
-            P2Action = true;
-            // print("p2 punch start");
-
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsPunching", true); */
-
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of punch to impact
-
-            if (!isP1Dodging)
+            IEnumerator P1DamageFlicker()
             {
-                Invoke("Player2PunchEnd", 0.4f); // Time value is length from impact to end of punch
-
-                // Punch Successful (Not attacked by the other player before this punch's impact)
-                if (P1PunchDamage.otherPlayerCanAttack)
+                yield return new WaitForSeconds(1.3f);
+                if(!P1Health.winState)
                 {
-                    P2Punch.SetActive(true);
-
-                    yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
-                    P2Punch.SetActive(false);
+                    for (int i = 0; i < 7; i++)
+                    {
+                        player1Mesh.SetActive(false);
+                        yield return new WaitForSeconds(0.1f);
+                        player1Mesh.SetActive(true);
+                        yield return new WaitForSeconds(0.1f);
+                    }
                 }
-                else
+            }
+
+
+
+
+
+
+
+
+
+            // --------------------------------------------------
+
+
+
+
+
+
+
+
+
+            // ~ Player 2 Controls ~
+
+            // Punch
+            if (Input.GetKeyDown(KeyCode.I) && !P2Action)
+            {
+                StartCoroutine(P2PunchFunction());
+            }
+
+            IEnumerator P2PunchFunction()
+            {
+                P2Action = true;
+                // print("p2 punch start");
+
+                // Animation 
+                P2Animator.SetBool("IsPunching", true);
+
+                yield return new WaitForSeconds(0.6f); // Time value is length from start of punch to impact
+
+                if (!isP1Dodging)
                 {
-                    P2PunchFake.SetActive(true); // "Fake" means that the punch visually looks the same, but doesn't work mechanically
+                    Invoke("Player2PunchEnd", 0.8f); // Time value is length from impact to end of punch
+
+                    // Punch Successful (Not attacked by the other player before this punch's impact)
+                    if (P1PunchDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
+                    {
+                        P1Action = true;
+                        P2Punch.SetActive(true);
+                        P1Animator.SetBool("Damaged", true);
+
+                        yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
+                        P2Punch.SetActive(false);
+                        P1Animator.SetBool("Damaged", false);
+
+                        yield return new WaitForSeconds(0.7f);
+                        P1Action = false;
+                    }
+                    else
+                    {
+                        P2PunchFake.SetActive(true); // "Fake" means that the punch visually looks the same, but doesn't work mechanically
+
+                        yield return new WaitForSeconds(0.1f);
+                        P2PunchFake.SetActive(false);
+                    }
+                }
+                else if (isP1Dodging && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
+                {
+                    // Punch was unsuccessful, player stunned
+                    P2PunchFake.SetActive(true);
+                    P1PunchDamage.otherPlayerCanAttack = true;
+
+                    P2Animator.SetBool("IsStunned", true);
+
+                    yield return new WaitForSeconds(0.1f);
+                    P2PunchFake.SetActive(false);
+
+                    yield return new WaitForSeconds(1.5f); // Time value is stunned period
+                    P2Animator.SetBool("IsStunned", false);
+                    Player2PunchEnd();
+                }
+                else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+                {
+                    Invoke("Player1PunchEnd", 0.8f);
+                    P2PunchFake.SetActive(true);
 
                     yield return new WaitForSeconds(0.1f);
                     P2PunchFake.SetActive(false);
                 }
             }
-            else if (isP1Dodging && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
+
+            // Dodge
+            if (Input.GetKeyDown(KeyCode.O) && !P2Action)
             {
-                // Punch was unsuccessful, player stunned
-                P2PunchFake.SetActive(true);
-                P1PunchDamage.otherPlayerCanAttack = true;
-
-                meshP2.material.color = Color.yellow; // Placeholder coloring
-                // P2Animator.SetBool("IsStunned", true);
-
-                yield return new WaitForSeconds(0.1f);
-                P2PunchFake.SetActive(false);
-
-                yield return new WaitForSeconds(1); // Time value is stunned period
-                // P2Animator.SetBool("IsStunned", false);
-                Player2PunchEnd();
+                StartCoroutine(P2DodgeFunction());
             }
-            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+
+            IEnumerator P2DodgeFunction()
             {
-                P2PunchFake.SetActive(true);
+                P2Action = true;
+                // print("p2 dodge start");
 
-                yield return new WaitForSeconds(0.1f);
-                P2PunchFake.SetActive(false);
+                // Animation
+                P2Animator.SetBool("IsDodging", true);
 
-                yield return new WaitForSeconds(0.3f);
-                P2Action = false;
+                yield return new WaitForSeconds(0.2f); // Time [before] player is in dodging state
+                isP2Dodging = true;
+                P2Dodge.SetActive(true);
+
+                yield return new WaitForSeconds(1); // Time [when] player is in dodging state
+
+                // End of Dodge
+                isP2Dodging = false;
+                P2Dodge.SetActive(false);
+                Player2DodgeEnd();
             }
-        }
 
-        // Dodge
-        if (Input.GetKeyDown(KeyCode.P) && !P2Action)
-        {
-            StartCoroutine(P2DodgeFunction());
-        }
-
-        IEnumerator P2DodgeFunction()
-        {
-            P2Action = true;
-            // print("p2 dodge start");
-
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsDodging", true); */
-
-            yield return new WaitForSeconds(0.3f); // Time [before] player is in dodging state
-            isP2Dodging = true;
-            P2Dodge.SetActive(true);
-
-            yield return new WaitForSeconds(0.5f); // Time [when] player is in dodging state
-
-            // End of Dodge
-            isP2Dodging = false;
-            P2Dodge.SetActive(false);
-            Player2DodgeEnd();
-        }
-
-        // Slice
-        if (Input.GetKeyDown(KeyCode.K) && !P2Action)
-        {
-            StartCoroutine(P2SliceFunction());
-        }
-
-        IEnumerator P2SliceFunction()
-        {
-            P2Action = true;
-            // print("p2 slice start");
-
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsSlicing", true); */
-
-            yield return new WaitForSeconds(0.3f); // Time value is length from start of slice to impact
-
-            if (!isP1Deflecting)
+            // Slice
+            if (Input.GetKeyDown(KeyCode.K) && !P2Action)
             {
-                Invoke("Player2SliceEnd", 0.4f); // Time value is length from impact to end of slice
+                StartCoroutine(P2SliceFunction());
+            }
 
-                // Slice Successful (Not attacked by the other player before this slice's impact)
-                if (P1SliceDamage.otherPlayerCanAttack)
+            IEnumerator P2SliceFunction()
+            {
+                P2Action = true;
+                // print("p2 slice start");
+
+                // Animation
+                P2Animator.SetBool("IsSlicing", true);
+
+                yield return new WaitForSeconds(0.5f); // Time value is length from start of slice to impact
+
+                if (!isP1Deflecting)
                 {
-                    P2Slice.SetActive(true);
+                    Invoke("Player2SliceEnd", 0.8f); // Time value is length from impact to end of slice
 
-                    yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
-                    P2Slice.SetActive(false);
+                    // Slice Successful (Not attacked by the other player before this slice's impact)
+                    if (P1SliceDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
+                    {
+                        P1Action = true;
+                        P2Slice.SetActive(true);
+                        P1Animator.SetBool("Damaged", true);
+
+                        yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
+                        P2Slice.SetActive(false);
+                        P1Animator.SetBool("Damaged", false);
+
+                        yield return new WaitForSeconds(0.7f);
+                        P1Action = false;
+                    }
+                    else
+                    {
+                        P2SliceFake.SetActive(true); // "Fake" means that the slice visually looks the same, but doesn't work mechanically
+
+                        yield return new WaitForSeconds(0.1f);
+                        P2SliceFake.SetActive(false);
+                    }
                 }
-                else
+                else if (isP1Deflecting && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
                 {
-                    P2SliceFake.SetActive(true); // "Fake" means that the slice visually looks the same, but doesn't work mechanically
+                    // Slice was unsuccessful, player stunned
+                    P2SliceFake.SetActive(true);
+                    P1SliceDamage.otherPlayerCanAttack = true;
 
+                    P2Animator.SetBool("IsStunned", true);
+
+                    yield return new WaitForSeconds(0.1f);
+                    P2SliceFake.SetActive(false);
+
+                    yield return new WaitForSeconds(1.5f); // Time value is stunned period
+                    P2Animator.SetBool("IsStunned", false);
+                    Player2SliceEnd();
+                }
+                else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+                {
+                    Invoke("Player1PunchEnd", 0.8f);
+                    P2SliceFake.SetActive(true);
 
                     yield return new WaitForSeconds(0.1f);
                     P2SliceFake.SetActive(false);
                 }
             }
-            else if (isP1Deflecting && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
+
+            // Deflect
+            if (Input.GetKeyDown(KeyCode.L) && !P2Action)
             {
-                // Slice was unsuccessful, player stunned
-                P2SliceFake.SetActive(true);
-                P1SliceDamage.otherPlayerCanAttack = true;
-
-                meshP2.material.color = Color.yellow; // Placeholder coloring
-                // P2Animator.SetBool("IsStunned", true);
-
-                yield return new WaitForSeconds(0.1f);
-                P2SliceFake.SetActive(false);
-
-                yield return new WaitForSeconds(1); // Time value is stunned period
-                // P2Animator.SetBool("IsStunned", false);
-                Player2SliceEnd();
+                StartCoroutine(P2DeflectFunction());
             }
-            else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
+
+            IEnumerator P2DeflectFunction()
             {
-                P2SliceFake.SetActive(true);
+                P2Action = true;
+                // print("p2 deflect start");
 
-                yield return new WaitForSeconds(0.1f);
-                P2SliceFake.SetActive(false);
+                // Animation
+                P2Animator.SetBool("IsDeflecting", true);
+                P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
 
-                yield return new WaitForSeconds(0.3f);
-                P2Action = false;
+                yield return new WaitForSeconds(0.2f); // Time [before] player is in deflecting state
+                isP2Deflecting = true;
+                P2Deflect.SetActive(true);
+
+                yield return new WaitForSeconds(0.5f); // Time [when] player is in deflecting state
+
+                // End of Deflect
+                isP2Deflecting = false;
+                P2Deflect.SetActive(false);
+                Player2DeflectEnd();
+
+                yield return new WaitForSeconds(0.15f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
+            }
+
+            // Damage Flicker (I-Frames)
+            if (P2flickering && (P1SliceDamage.playerInvincible || P1PunchDamage.playerInvincible))
+            {
+                StartCoroutine(P2DamageFlicker());
+                P2flickering = false;
+            }
+
+            IEnumerator P2DamageFlicker()
+            {
+                yield return new WaitForSeconds(1.3f);
+
+                if (!P2Health.winState)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        player2Mesh.SetActive(false);
+                        yield return new WaitForSeconds(0.1f);
+                        player2Mesh.SetActive(true);
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+            }
+        }
+        
+
+        // P1 Defeated
+        if (P1Health.winState && P1WinFunction)
+        {
+            StartCoroutine(Player1Defeated());
+            P1WinFunction = false;
+        }
+
+        IEnumerator Player1Defeated()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
+            P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
+            P1Animator.SetBool("Defeated", true);
+            P2Animator.SetBool("GameWon", true);
+
+            yield return new WaitForSeconds(0.01f);
+
+            P1Animator.SetBool("Defeated", false);
+            P2Animator.SetBool("GameWon", false);
+
+            // Fixes for Character Animation Inconcistency
+            if (P1Main.name == "Brute")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y, P1Pos.z);
+            }
+            else if (P1Main.name == "Ninja")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.3f, P1Pos.z);
+            }
+            else if (P1Main.name == "Kachujin")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P1Main.transform.position = new Vector3(P1Pos.x, P1Pos.y + 0.1f, P1Pos.z);
             }
         }
 
-        // Deflect
-        if (Input.GetKeyDown(KeyCode.L) && !P2Action)
+        // P2 Defeated
+        if (P2Health.winState && P2WinFunction)
         {
-            StartCoroutine(P2DeflectFunction());
+            StartCoroutine(Player2Defeated());
+            P2WinFunction = false;
         }
 
-        IEnumerator P2DeflectFunction()
+        IEnumerator Player2Defeated()
         {
-            P2Action = true;
-            // print("p2 deflect start");
+            yield return new WaitForSeconds(0.5f);
 
-            /* Animation will be triggered here
-            P2Animator.SetBool("IsDeflecting", true); */
+            P1Main.transform.position = new Vector3(P1Pos.x, (P1Pos.y + 0.4f), P1Pos.z);
+            P2Main.transform.position = new Vector3(P2Pos.x, (P2Pos.y + 0.4f), P2Pos.z);
+            P2Animator.SetBool("Defeated", true);
+            P1Animator.SetBool("GameWon", true);
 
-            yield return new WaitForSeconds(0.3f); // Time [before] player is in deflecting state
-            isP2Deflecting = true;
-            P2Deflect.SetActive(true);
+            yield return new WaitForSeconds(0.01f);
 
-            yield return new WaitForSeconds(0.5f); // Time [when] player is in deflecting state
+            P2Animator.SetBool("Defeated", false);
+            P1Animator.SetBool("GameWon", false);
 
-            // End of Deflect
-            isP2Deflecting = false;
-            P2Deflect.SetActive(false);
-            Player2DeflectEnd();
-        }
-
-        // Damage Flicker (I-Frames)
-        if (flickering && (P1SliceDamage.playerInvincible || P1PunchDamage.playerInvincible))
-        {
-            StartCoroutine(P2DamageFlicker());
-            flickering = false;
-        }
-
-        IEnumerator P2DamageFlicker()
-        {
-            for (int j = 0; j < 7; j++)
+            // Fixes for Character Animation Inconcistency
+            if (P2Main.name == "Brute")
             {
-                meshP2.material.color = new Color(0, 0, 1, 0.5f);
-                yield return new WaitForSeconds(0.1f);
-                meshP2.material.color = Color.blue;
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(2.25f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y, P2Pos.z);
+            }
+            else if(P2Main.name == "Ninja")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.3f, P2Pos.z);
+            }
+            else if (P2Main.name == "Kachujin")
+            {
+                yield return new WaitForSeconds(2.25f);
+                P2Main.transform.position = new Vector3(P2Pos.x, P2Pos.y + 0.1f, P2Pos.z);
             }
         }
     }
+
 
     // Player 1 Void Functions
     void Player1PunchEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsPunching", false);
+        P1Animator.SetBool("IsPunching", false);
 
         // print("p1 punch end");
-        meshP1.material.color = Color.red;
+        player1Mesh.SetActive(true);
         P2PunchDamage.otherPlayerCanAttack = true;
         P1PunchDamage.otherPlayerCanAttack = true;
     }
     void Player1DodgeEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsDodging", false);
+        P1Animator.SetBool("IsDodging", false);
 
         // print("p1 dodge end");
     }
     void Player1SliceEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsSlicing", false);
+        P1Animator.SetBool("IsSlicing", false);
 
         // print("p1 slice end");
-        meshP1.material.color = Color.red;
+        player1Mesh.SetActive(true);
         P2SliceDamage.otherPlayerCanAttack = true;
         P1SliceDamage.otherPlayerCanAttack = true;
     }
     void Player1DeflectEnd()
     {
         P1Action = false;
-        // P1Animator.SetBool("IsDeflecting", false);
+        P1Animator.SetBool("IsDeflecting", false);
 
         // print("p1 deflect end");
     }
@@ -519,34 +659,34 @@ public class PlayerController : MonoBehaviour
     void Player2PunchEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsPunching", false);
+        P2Animator.SetBool("IsPunching", false);
 
         // print("p2 punch end");
-        meshP2.material.color = Color.blue;
+        player2Mesh.SetActive(true);
         P1PunchDamage.otherPlayerCanAttack = true;
         P2PunchDamage.otherPlayerCanAttack = true;
     }
     void Player2DodgeEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsDodging", false);
+        P2Animator.SetBool("IsDodging", false);
 
         // print("p2 dodge end");
     }
     void Player2SliceEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsSlicing", false);
+        P2Animator.SetBool("IsSlicing", false);
 
         // print("p2 slice end");
-        meshP2.material.color = Color.blue;
+        player2Mesh.SetActive(true);
         P1SliceDamage.otherPlayerCanAttack = true;
         P2SliceDamage.otherPlayerCanAttack = true;
     }
     void Player2DeflectEnd()
     {
         P2Action = false;
-        // P2Animator.SetBool("IsDeflecting", false);
+        P2Animator.SetBool("IsDeflecting", false);
 
         // print("p2 deflect end");
     }

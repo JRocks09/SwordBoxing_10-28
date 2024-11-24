@@ -33,7 +33,16 @@ public class Damage : MonoBehaviour
                 && !playerController.isP1Dodging && !playerController.isP2Dodging && !playerInvincible)
             {
                 // Takes away health from the player based on the damage value
-                playerController.flickering = true;
+                if (collision.gameObject.CompareTag("Player1"))
+                {
+                    playerController.P1flickering = true;
+                }
+
+                if (collision.gameObject.CompareTag("Player2"))
+                {
+                    playerController.P2flickering = true;
+                }
+
                 playerInvincible = true;
                 otherPlayerCanAttack = false;
                 collision.gameObject.GetComponent<playerHealth>().health -= damage;
@@ -50,7 +59,16 @@ public class Damage : MonoBehaviour
                 && !playerController.isP1Deflecting && !playerController.isP2Deflecting && !playerInvincible)
             {
                 // Takes away health from the player based on the damage value
-                playerController.flickering = true;
+                if (collision.gameObject.CompareTag("Player1"))
+                {
+                    playerController.P1flickering = true;
+                }
+
+                if (collision.gameObject.CompareTag("Player2"))
+                {
+                    playerController.P2flickering = true;
+                }
+
                 playerInvincible = true;
                 otherPlayerCanAttack = false;
                 collision.gameObject.GetComponent<playerHealth>().health -= damage;
