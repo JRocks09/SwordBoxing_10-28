@@ -1,19 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// To access the unity ui elements, in this case being the square
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class playerHealth : MonoBehaviour
 {
-
 #pragma warning disable IDE0051 // Remove unused private members
 
     // Health Variables
     public float health;
-    float maxHealth;
+    private float maxHealth;
 
     // Image of Health Bar
     public Image healthBar;
@@ -24,6 +21,9 @@ public class playerHealth : MonoBehaviour
 
     // Win State Variable
     [HideInInspector] public bool winState;
+
+    // Sound
+    AudioManager audioManager;
 
     void Start()
     { 
@@ -60,13 +60,12 @@ public class playerHealth : MonoBehaviour
                 winText.text = "Player 1 Wins! Press R to restart";
                 winText.color = Color.red;
             }
+
+            yield return new WaitForSeconds(0.5f); // Edit this time value as needed to line up with voicelines
+            // SOUND: "Congratulations" SFX
+
+            yield return new WaitForSeconds(0.5f); // Edit this time value as needed to line up with voicelines
+            // SOUND: "You Win" SFX
         }
-
-
-        /* For testing (lowering health)
-        if (Input.GetKeyUp(KeyCode.B))
-        {
-            health -= 5;
-        } */
     }
 }

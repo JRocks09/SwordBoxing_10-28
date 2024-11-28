@@ -16,7 +16,6 @@ public class Damage : MonoBehaviour
     // Damage
     public float damage;
 
-
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -36,11 +35,13 @@ public class Damage : MonoBehaviour
                 if (collision.gameObject.CompareTag("Player1"))
                 {
                     playerController.P1flickering = true;
+                    collision.gameObject.GetComponent<ParticleSystem>().Play();
                 }
 
                 if (collision.gameObject.CompareTag("Player2"))
                 {
                     playerController.P2flickering = true;
+                    collision.gameObject.GetComponent<ParticleSystem>().Play();
                 }
 
                 playerInvincible = true;
@@ -49,8 +50,7 @@ public class Damage : MonoBehaviour
                 Invoke(nameof(InvincibilityOver), invincibilityTimer);
                 // print(collision.name + " invincible");
 
-                // Plays damage taken SFX [PUNCH] >> Change Later
-                audioManager.PlaySFX(audioManager.damageTaken, 1);
+                // SOUND: Damage taken SFX [PUNCH]
             }
 
             /* SLICE:
@@ -62,11 +62,13 @@ public class Damage : MonoBehaviour
                 if (collision.gameObject.CompareTag("Player1"))
                 {
                     playerController.P1flickering = true;
+                    collision.gameObject.GetComponent<ParticleSystem>().Play();
                 }
 
                 if (collision.gameObject.CompareTag("Player2"))
                 {
                     playerController.P2flickering = true;
+                    collision.gameObject.GetComponent<ParticleSystem>().Play();
                 }
 
                 playerInvincible = true;
@@ -75,8 +77,7 @@ public class Damage : MonoBehaviour
                 Invoke(nameof(InvincibilityOver), invincibilityTimer);
                 // print(collision.name + " invincible");
 
-                // Plays damage taken SFX [SLICE] >> Change Later
-                audioManager.PlaySFX(audioManager.damageTaken, 1);
+                // SOUND: Damage taken SFX [SLICE] (different damage SFX is optional, but addressed it in case you had multiple)
             }
         }
     }

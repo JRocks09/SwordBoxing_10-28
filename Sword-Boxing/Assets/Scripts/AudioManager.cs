@@ -10,14 +10,15 @@ public class AudioManager : MonoBehaviour
 
     [Header("-------- Audio Clip --------")]
     /* BGM:
-    public AudioClip background;
+    public AudioClip FightingBGM;
+    public AudioClip LockerRoomBGM;
     */
     public AudioClip damageTaken;
     public AudioClip hitSound;
 
     private void Start()
     {
-        // musicSource.clip = background;
+        // musicSource.clip = BGM;
         // musicSource.Play();
     }
 
