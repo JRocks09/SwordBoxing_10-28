@@ -14,11 +14,13 @@ public class AudioManager : MonoBehaviour
     */
     public AudioClip damageTaken;
     public AudioClip hitSound;
+    public AudioClip BGM;
+    
+    private void Start() 
 
-    private void Start()
     {
-        // musicSource.clip = background;
-        // musicSource.Play();
+         musicSource.clip = BGM;
+         musicSource.Play();
     }
 
     public void PlaySFX(AudioClip clip, float volume = 1.0f) // Default Volume Value
