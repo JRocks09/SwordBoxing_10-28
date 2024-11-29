@@ -155,14 +155,14 @@ public class PlayerController : MonoBehaviour
             else
             {
                 yield return new WaitForSeconds(1.5f);
-                audioManager.PlaySFX(audioManager.boxingBGM, 0.04f);
+                audioManager.PlaySFX(audioManager.boxingBGM, 0.03f);
                 //Keep this volume for the BGM, any higher than a decimal place and it will blow your speakers up real
 
 
                 // ~ Player 1 Controls ~
 
                 // Punch
-                if (Input.GetKeyDown(KeyCode.E) && !P1Action)
+                if (Input.GetKeyDown(KeyCode.W) && !P1Action)
                 {
                     StartCoroutine(P1PunchFunction());
                 }
@@ -184,8 +184,7 @@ public class PlayerController : MonoBehaviour
                         // Punch Successful (Not attacked by the other player before this punch's impact)
                         if (P2PunchDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
                         {
-                            P2Animator.SetBool("IsStunned", false);
-
+                            P2StunAnim.SetActive(false);
                             yield return new WaitForSeconds(0.01f);
                             P2Action = true;
                             P1Punch.SetActive(true);
@@ -223,7 +222,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 // Dodge
-                if (Input.GetKeyDown(KeyCode.W) && !P1Action)
+                if (Input.GetKeyDown(KeyCode.Q) && !P1Action)
                 {
                     StartCoroutine(P1DodgeFunction());
                 }
@@ -340,8 +339,7 @@ public class PlayerController : MonoBehaviour
                         // Slice Successful (Not attacked by the other player before this slice's impact)
                         if (P2SliceDamage.otherPlayerCanAttack && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
                         {
-                            P2Animator.SetBool("IsStunned", false);
-
+                            P2StunAnim.SetActive(false);
                             yield return new WaitForSeconds(0.01f);
                             P2Action = true;
                             P1Slice.SetActive(true);
@@ -374,7 +372,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
                     {
-                        Invoke("Player1PunchEnd", 0.8f);
+                        Invoke("Player1SliceEnd", 0.8f);
                     }
                 }
 
@@ -541,8 +539,7 @@ public class PlayerController : MonoBehaviour
                         // Punch Successful (Not attacked by the other player before this punch's impact)
                         if (P1PunchDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                         {
-                            P1Animator.SetBool("IsStunned", false);
-
+                            P1StunAnim.SetActive(false);
                             yield return new WaitForSeconds(0.01f);
                             P1Action = true;
                             P2Punch.SetActive(true);
@@ -575,7 +572,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
                     {
-                        Invoke("Player1PunchEnd", 0.8f);
+                        Invoke("Player2PunchEnd", 0.8f);
                     }
                 }
 
@@ -695,8 +692,7 @@ public class PlayerController : MonoBehaviour
                         // Slice Successful (Not attacked by the other player before this slice's impact)
                         if (P1SliceDamage.otherPlayerCanAttack && !P2SliceDamage.playerInvincible && !P2PunchDamage.playerInvincible)
                         {
-                            P1Animator.SetBool("IsStunned", false);
-
+                            P1StunAnim.SetActive(false);
                             yield return new WaitForSeconds(0.1f);
                             P1Action = true;
                             P2Slice.SetActive(true);
@@ -729,7 +725,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else // Edge Case: Player attacks other's defence while invincible. Does not stun attacking player.
                     {
-                        Invoke("Player1PunchEnd", 0.8f);
+                        Invoke("Player2SliceEnd", 0.8f);
                     }
                 }
 

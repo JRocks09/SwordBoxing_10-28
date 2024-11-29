@@ -3824,7 +3824,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688956af616b97f4e89849dd3e8575fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 1801181432}
   SFXSource: {fileID: 1777400490}
   boxingBGM: {fileID: 8300000, guid: 005340aa3a179cf44ba0b671df42ca78, type: 3}
   lockerBGM: {fileID: 8300000, guid: 2c6730b9ac2629f419658289cc822369, type: 3}
@@ -3840,6 +3839,8 @@ MonoBehaviour:
   readySound: {fileID: 8300000, guid: baf73ca1795019f46929cb3947d36c1e, type: 3}
   goSound: {fileID: 8300000, guid: 3cff78a0e19692b43a5dceba7a534acf, type: 3}
   bellSound: {fileID: 8300000, guid: 17f33cba1ee13ee40beac14410d12ea4, type: 3}
+  congratulations: {fileID: 8300000, guid: df5e089b91264bb4e9f42a31b9623f34, type: 3}
+  youWin: {fileID: 8300000, guid: 32e8315f6f865cc4aa4fcba50ee8c034, type: 3}
 --- !u!4 &451588657
 Transform:
   m_ObjectHideFlags: 0

@@ -5,16 +5,15 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Header("-------- Audio Source --------")]
-    [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource SFXSource;
 
     [Header("-------- Audio Clip --------")]
-    //BGM:
+
+    // BGM:
     public AudioClip boxingBGM;
     public AudioClip lockerBGM;
-    //public AudioClip maleHurt;
-    //public AudioClip femaleHurt;
-    // Note: I don't know how to put them in the Damage Script so I replaced it with a generic 8-bit sound for damage taken
+
+    // SFX:
     public AudioClip damageTaken;
     public AudioClip punchHit;
     public AudioClip blockSound;
@@ -26,13 +25,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip stunSound;
     public AudioClip readySound;
     public AudioClip goSound;
-    //public AudioClip bellSound;
-    // Note:  Attempted to do bell sound when game ends; it didn't work for player 2 win; unsure why and it is extremely loud so set it at 0.04
-    private void Start()
-    {
-        // musicSource.clip = BGM;
-        // musicSource.Play();
-    }
+    public AudioClip bellSound;
+    public AudioClip congratulations;
+    public AudioClip youWin;
 
     public void PlaySFX(AudioClip clip, float volume = 1.0f) // Default Volume Value
     {
