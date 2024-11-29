@@ -3826,9 +3826,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1801181432}
   SFXSource: {fileID: 1777400490}
-  damageTaken: {fileID: 8300000, guid: 41e38fe383827f643a1d59a8da0b63c0, type: 3}
-  hitSound: {fileID: 0}
-  BGM: {fileID: 8300000, guid: 005340aa3a179cf44ba0b671df42ca78, type: 3}
+  boxingBGM: {fileID: 8300000, guid: 005340aa3a179cf44ba0b671df42ca78, type: 3}
+  lockerBGM: {fileID: 8300000, guid: 2c6730b9ac2629f419658289cc822369, type: 3}
+  damageTaken: {fileID: 8300000, guid: 45a1716dcf7af064bae125476f2d00fe, type: 3}
+  punchHit: {fileID: 8300000, guid: 0349fe7b71165974486ea1bb2bce138e, type: 3}
+  blockSound: {fileID: 8300000, guid: b652620ef8a869d459c28d96b8beca48, type: 3}
+  swordSwing: {fileID: 8300000, guid: 67eba265f9288bc43b68bca98e36972d, type: 3}
+  swordHit: {fileID: 8300000, guid: fb25d6bf4dfd05748b3d9f307a0baa83, type: 3}
+  swordClash: {fileID: 8300000, guid: 4d1d2e43fd868ad45944761ab7f62fc6, type: 3}
+  deflectSound: {fileID: 8300000, guid: 2d838e25982e4584981f9a7a2972009e, type: 3}
+  dodgeSound: {fileID: 8300000, guid: 4b95d46383cc36940b92c9fe446c8f3e, type: 3}
+  stunSound: {fileID: 8300000, guid: 0af370e9b51a6f14e8be1bbda4ed6e3d, type: 3}
+  readySound: {fileID: 8300000, guid: baf73ca1795019f46929cb3947d36c1e, type: 3}
+  goSound: {fileID: 8300000, guid: 3cff78a0e19692b43a5dceba7a534acf, type: 3}
+  bellSound: {fileID: 8300000, guid: 17f33cba1ee13ee40beac14410d12ea4, type: 3}
 --- !u!4 &451588657
 Transform:
   m_ObjectHideFlags: 0
@@ -25432,7 +25443,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0

@@ -9,13 +9,25 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource SFXSource;
 
     [Header("-------- Audio Clip --------")]
-    /* BGM:
-    public AudioClip FightingBGM;
-    public AudioClip LockerRoomBGM;
-    */
+    //BGM:
+    public AudioClip boxingBGM;
+    public AudioClip lockerBGM;
+    //public AudioClip maleHurt;
+    //public AudioClip femaleHurt;
+    // Note: I don't know how to put them in the Damage Script so I replaced it with a generic 8-bit sound for damage taken
     public AudioClip damageTaken;
-    public AudioClip hitSound;
-
+    public AudioClip punchHit;
+    public AudioClip blockSound;
+    public AudioClip swordSwing;
+    public AudioClip swordHit;
+    public AudioClip swordClash;
+    public AudioClip deflectSound;
+    public AudioClip dodgeSound;
+    public AudioClip stunSound;
+    public AudioClip readySound;
+    public AudioClip goSound;
+    //public AudioClip bellSound;
+    // Note:  Attempted to do bell sound when game ends; it didn't work for player 2 win; unsure why and it is extremely loud so set it at 0.04
     private void Start()
     {
         // musicSource.clip = BGM;

@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-
 public class PlayerController : MonoBehaviour
+
+
 {
 #pragma warning disable IDE0051 // Remove unused private members
 
@@ -106,8 +107,11 @@ public class PlayerController : MonoBehaviour
         BruteEmission7 = BruteMeshPart7.GetComponent<SkinnedMeshRenderer>();
         BruteEmission8 = BruteMeshPart8.GetComponent<SkinnedMeshRenderer>();
     }
-
-
+        AudioManager audioManager;
+      private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     void Update()
     {
         // Variable Initialization
@@ -130,12 +134,12 @@ public class PlayerController : MonoBehaviour
 
                 yield return new WaitForSeconds(0.5f);
                 StartText.text = "Ready?";
-                // SOUND: "Ready" SFX
+                audioManager.PlaySFX(audioManager.readySound, 1);
                 StartTextObject.SetActive(true);
 
                 yield return new WaitForSeconds(1);
                 StartText.text = "Go!";
-                // SOUND: "Go" SFX
+                audioManager.PlaySFX(audioManager.goSound, 1);
             }
 
             // Restart Game on Finish
@@ -151,7 +155,8 @@ public class PlayerController : MonoBehaviour
             else
             {
                 yield return new WaitForSeconds(1.5f);
-                // SOUND: BGM goes here
+                audioManager.PlaySFX(audioManager.boxingBGM, 0.04f);
+                //Keep this volume for the BGM, any higher than a decimal place and it will blow your speakers up real
 
 
                 // ~ Player 1 Controls ~
@@ -185,7 +190,7 @@ public class PlayerController : MonoBehaviour
                             P2Action = true;
                             P1Punch.SetActive(true);
                             P2Animator.SetBool("Damaged", true);
-                            // SOUND: Punch Impact SFX
+                            audioManager.PlaySFX(audioManager.punchHit, 0.5f);
 
                             yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
                             P1Punch.SetActive(false);
@@ -202,9 +207,9 @@ public class PlayerController : MonoBehaviour
                         P2PunchDamage.otherPlayerCanAttack = true;
 
                         P1Animator.SetBool("IsStunned", true);
-                        // SOUND: Attack Dodged SFX (optional)
+                        audioManager.PlaySFX(audioManager.blockSound, 1);
                         // Apply WaitForSeconds function if needed, example below
-                        // SOUND: Stunned/Dizzy SFX
+                        audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
                         P1StunAnim.SetActive(false);
@@ -268,7 +273,7 @@ public class PlayerController : MonoBehaviour
 
                     isP1Dodging = true;
                     P1Dodge.SetActive(true);
-                    // SOUND: Dodging SFX
+                    audioManager.PlaySFX(audioManager.dodgeSound, 1);
 
                     yield return new WaitForSeconds(0.7f); // Time [when] player is in dodging state
 
@@ -341,7 +346,7 @@ public class PlayerController : MonoBehaviour
                             P2Action = true;
                             P1Slice.SetActive(true);
                             P2Animator.SetBool("Damaged", true);
-                            // SOUND: Sword Slice Impact SFX
+                            audioManager.PlaySFX(audioManager.swordHit, 1);
 
                             yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
                             P1Slice.SetActive(false);
@@ -358,9 +363,9 @@ public class PlayerController : MonoBehaviour
                         P2SliceDamage.otherPlayerCanAttack = true;
 
                         P1Animator.SetBool("IsStunned", true);
-                        // SOUND: Sword Clash SFX
+                        audioManager.PlaySFX(audioManager.swordClash, 1);
                         // Apply WaitForSeconds function if needed, example below
-                        // SOUND: Stunned/Dizzy SFX
+                        audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
                         P1StunAnim.SetActive(false);
@@ -424,7 +429,7 @@ public class PlayerController : MonoBehaviour
 
                     isP1Deflecting = true;
                     P1Deflect.SetActive(true);
-                    // SOUND: Deflecting SFX
+                    audioManager.PlaySFX(audioManager.deflectSound, 1);
 
                     yield return new WaitForSeconds(0.65f); // Time [when] player is in deflecting state
 
@@ -542,7 +547,7 @@ public class PlayerController : MonoBehaviour
                             P1Action = true;
                             P2Punch.SetActive(true);
                             P1Animator.SetBool("Damaged", true);
-                            // SOUND: Punch Impact SFX
+                            audioManager.PlaySFX(audioManager.punchHit, 0.5f);
 
                             yield return new WaitForSeconds(0.1f); // Time value is punch impact duration
                             P2Punch.SetActive(false);
@@ -559,9 +564,9 @@ public class PlayerController : MonoBehaviour
                         P1PunchDamage.otherPlayerCanAttack = true;
 
                         P2Animator.SetBool("IsStunned", true);
-                        // SOUND: Attack Dodged SFX (optional)
+                        audioManager.PlaySFX(audioManager.blockSound, 1);
                         // Apply WaitForSeconds function if needed, example below
-                        // SOUND: Stunned/Dizzy SFX
+                        audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
                         P2StunAnim.SetActive(false);
@@ -625,7 +630,7 @@ public class PlayerController : MonoBehaviour
 
                     isP2Dodging = true;
                     P2Dodge.SetActive(true);
-                    // SOUND: Dodging SFX
+                    audioManager.PlaySFX(audioManager.dodgeSound, 1);
 
                     yield return new WaitForSeconds(1); // Time [when] player is in dodging state
 
@@ -696,7 +701,7 @@ public class PlayerController : MonoBehaviour
                             P1Action = true;
                             P2Slice.SetActive(true);
                             P1Animator.SetBool("Damaged", true);
-                            // SOUND: Sword Slice Impact SFX
+                            audioManager.PlaySFX(audioManager.swordHit, 1);
 
                             yield return new WaitForSeconds(0.1f); // Time value is slice impact duration
                             P2Slice.SetActive(false);
@@ -713,9 +718,9 @@ public class PlayerController : MonoBehaviour
                         P1SliceDamage.otherPlayerCanAttack = true;
 
                         P2Animator.SetBool("IsStunned", true);
-                        // SOUND: Sword Clash SFX
+                        audioManager.PlaySFX(audioManager.swordClash, 1);
                         // Apply WaitForSeconds function if needed, example below
-                        // SOUND: Stunned/Dizzy SFX
+                        audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
                         P2StunAnim.SetActive(false);
@@ -779,7 +784,7 @@ public class PlayerController : MonoBehaviour
 
                     isP2Deflecting = true;
                     P2Deflect.SetActive(true);
-                    // SOUND: Deflecting SFX
+                    audioManager.PlaySFX(audioManager.deflectSound, 1);
 
                     yield return new WaitForSeconds(0.65f); // Time [when] player is in deflecting state
 

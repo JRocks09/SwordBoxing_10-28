@@ -50,7 +50,7 @@ public class Damage : MonoBehaviour
                 Invoke(nameof(InvincibilityOver), invincibilityTimer);
                 // print(collision.name + " invincible");
 
-                // SOUND: Damage taken SFX [PUNCH]
+                audioManager.PlaySFX(audioManager.damageTaken, 0.9f);
             }
 
             /* SLICE:
@@ -76,8 +76,7 @@ public class Damage : MonoBehaviour
                 collision.gameObject.GetComponent<playerHealth>().health -= damage;
                 Invoke(nameof(InvincibilityOver), invincibilityTimer);
                 // print(collision.name + " invincible");
-
-                // SOUND: Damage taken SFX [SLICE] (different damage SFX is optional, but addressed it in case you had multiple)
+                audioManager.PlaySFX(audioManager.damageTaken, 0.9f);
             }
         }
     }
