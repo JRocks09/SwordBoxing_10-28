@@ -3826,8 +3826,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1801181432}
   SFXSource: {fileID: 1777400490}
-  damageTaken: {fileID: 8300000, guid: 20926ef76ef64944e8ef993374235dc3, type: 3}
+  damageTaken: {fileID: 8300000, guid: 41e38fe383827f643a1d59a8da0b63c0, type: 3}
   hitSound: {fileID: 0}
+  BGM: {fileID: 8300000, guid: 005340aa3a179cf44ba0b671df42ca78, type: 3}
 --- !u!4 &451588657
 Transform:
   m_ObjectHideFlags: 0
@@ -25431,13 +25432,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 100
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
