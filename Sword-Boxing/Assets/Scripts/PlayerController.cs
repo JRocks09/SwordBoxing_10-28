@@ -83,6 +83,8 @@ public class PlayerController : MonoBehaviour
     public Animator P1Animator;
     public Animator P2Animator;
 
+    AudioManager audioManager;
+
     void Start()
     {
         P1PunchDamage.otherPlayerCanAttack = true;
@@ -107,7 +109,6 @@ public class PlayerController : MonoBehaviour
         BruteEmission7 = BruteMeshPart7.GetComponent<SkinnedMeshRenderer>();
         BruteEmission8 = BruteMeshPart8.GetComponent<SkinnedMeshRenderer>();
     }
-        AudioManager audioManager;
       private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -154,9 +155,9 @@ public class PlayerController : MonoBehaviour
             // Player Action Logic
             else
             {
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(1.6f);
                 audioManager.PlaySFX(audioManager.boxingBGM, 0.03f);
-                //Keep this volume for the BGM, any higher than a decimal place and it will blow your speakers up real
+                // Keep this volume for the BGM
 
 
                 // ~ Player 1 Controls ~
@@ -195,7 +196,7 @@ public class PlayerController : MonoBehaviour
                             P1Punch.SetActive(false);
                             P2Animator.SetBool("Damaged", false);
 
-                            yield return new WaitForSeconds(0.7f);
+                            yield return new WaitForSeconds(1.4f);
                             P2Action = false;
                         }
                     }
@@ -207,7 +208,6 @@ public class PlayerController : MonoBehaviour
 
                         P1Animator.SetBool("IsStunned", true);
                         audioManager.PlaySFX(audioManager.blockSound, 1);
-                        // Apply WaitForSeconds function if needed, example below
                         audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
@@ -272,7 +272,7 @@ public class PlayerController : MonoBehaviour
 
                     isP1Dodging = true;
                     P1Dodge.SetActive(true);
-                    audioManager.PlaySFX(audioManager.dodgeSound, 1);
+                    audioManager.PlaySFX(audioManager.dodgeSound, 1.5f);
 
                     yield return new WaitForSeconds(0.7f); // Time [when] player is in dodging state
 
@@ -309,11 +309,14 @@ public class PlayerController : MonoBehaviour
                         P1Emission.material.DisableKeyword("_EMISSION");
                     }
 
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.2f);
 
                     isP1Dodging = false;
                     P1Dodge.SetActive(false);
                     Player1DodgeEnd();
+
+                    yield return new WaitForSeconds(0.2f);
+                    P1Action = false;
                 }
 
                 // Slice
@@ -350,7 +353,7 @@ public class PlayerController : MonoBehaviour
                             P1Slice.SetActive(false);
                             P2Animator.SetBool("Damaged", false);
 
-                            yield return new WaitForSeconds(0.7f);
+                            yield return new WaitForSeconds(1.4f);
                             P2Action = false;
                         }
                     }
@@ -362,7 +365,7 @@ public class PlayerController : MonoBehaviour
 
                         P1Animator.SetBool("IsStunned", true);
                         audioManager.PlaySFX(audioManager.swordClash, 1);
-                        // Apply WaitForSeconds function if needed, example below
+                        yield return new WaitForSeconds(0.01f);
                         audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
@@ -419,7 +422,7 @@ public class PlayerController : MonoBehaviour
                         BruteEmission7.material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
                         BruteEmission8.material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
                     }
-                    else if (P1Main.name == "Wrestler (P1)" || P1Main.name == "Ninja (P1)")
+                    else
                     {
                         P1Emission.material.EnableKeyword("_EMISSION");
                         P1Emission.material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
@@ -458,7 +461,7 @@ public class PlayerController : MonoBehaviour
                         BruteEmission7.material.DisableKeyword("_EMISSION");
                         BruteEmission8.material.DisableKeyword("_EMISSION");
                     }
-                    else if (P1Main.name == "Wrestler (P1)" || P1Main.name == "Ninja (P1)")
+                    else
                     {
                         P1Emission.material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
                         P1Emission.material.DisableKeyword("_EMISSION");
@@ -468,6 +471,8 @@ public class PlayerController : MonoBehaviour
                     P1Deflect.SetActive(false);
                     Player1DeflectEnd();
 
+                    yield return new WaitForSeconds(0.2f);
+                    P1Action = false;
                 }
 
                 // Damage Flicker (I-Frames)
@@ -550,7 +555,7 @@ public class PlayerController : MonoBehaviour
                             P2Punch.SetActive(false);
                             P1Animator.SetBool("Damaged", false);
 
-                            yield return new WaitForSeconds(0.7f);
+                            yield return new WaitForSeconds(1.4f);
                             P1Action = false;
                         }
                     }
@@ -562,7 +567,6 @@ public class PlayerController : MonoBehaviour
 
                         P2Animator.SetBool("IsStunned", true);
                         audioManager.PlaySFX(audioManager.blockSound, 1);
-                        // Apply WaitForSeconds function if needed, example below
                         audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
@@ -590,7 +594,7 @@ public class PlayerController : MonoBehaviour
                     // Animation
                     P2Animator.SetBool("IsDodging", true);
 
-                    yield return new WaitForSeconds(0.2f); // Time [before] player is in dodging state
+                    yield return new WaitForSeconds(0.5f); // Time [before] player is in dodging state
 
                     // Color Change (Yellow Emission)
                     if (P2Main.name == "Kachujin (P2)")
@@ -629,7 +633,7 @@ public class PlayerController : MonoBehaviour
                     P2Dodge.SetActive(true);
                     audioManager.PlaySFX(audioManager.dodgeSound, 1);
 
-                    yield return new WaitForSeconds(1); // Time [when] player is in dodging state
+                    yield return new WaitForSeconds(0.6f); // Time [when] player is in dodging state
 
                     // End of Dodge
                     if (P2Main.name == "Kachujin (P2)")
@@ -664,9 +668,14 @@ public class PlayerController : MonoBehaviour
                         P2Emission.material.DisableKeyword("_EMISSION");
                     }
 
+                    yield return new WaitForSeconds(0.2f);
+
                     isP2Dodging = false;
                     P2Dodge.SetActive(false);
                     Player2DodgeEnd();
+
+                    yield return new WaitForSeconds(0.2f);
+                    P2Action = false;
                 }
 
                 // Slice
@@ -703,8 +712,9 @@ public class PlayerController : MonoBehaviour
                             P2Slice.SetActive(false);
                             P1Animator.SetBool("Damaged", false);
 
-                            yield return new WaitForSeconds(0.7f);
+                            yield return new WaitForSeconds(1.4f);
                             P1Action = false;
+                            P2Action = false;
                         }
                     }
                     else if (isP1Deflecting && !P1SliceDamage.playerInvincible && !P1PunchDamage.playerInvincible)
@@ -715,7 +725,7 @@ public class PlayerController : MonoBehaviour
 
                         P2Animator.SetBool("IsStunned", true);
                         audioManager.PlaySFX(audioManager.swordClash, 1);
-                        // Apply WaitForSeconds function if needed, example below
+                        yield return new WaitForSeconds(0.01f);
                         audioManager.PlaySFX(audioManager.stunSound, 1);
 
                         yield return new WaitForSeconds(1.6f); // Time value is stunned period
@@ -820,6 +830,9 @@ public class PlayerController : MonoBehaviour
                     isP2Deflecting = false;
                     P2Deflect.SetActive(false);
                     Player2DeflectEnd();
+
+                    yield return new WaitForSeconds(0.2f);
+                    P2Action = false;
                 }
 
                 // Damage Flicker (I-Frames)
@@ -938,7 +951,7 @@ public class PlayerController : MonoBehaviour
     // Player 1 Void Functions
     void Player1PunchEnd()
     {
-        P1Action = false;
+        StartCoroutine(P1ActionEnd());
         P1Animator.SetBool("IsPunching", false);
 
         // print("p1 punch end");
@@ -948,14 +961,13 @@ public class PlayerController : MonoBehaviour
     }
     void Player1DodgeEnd()
     {
-        P1Action = false;
         P1Animator.SetBool("IsDodging", false);
 
         // print("p1 dodge end");
     }
     void Player1SliceEnd()
     {
-        P1Action = false;
+        StartCoroutine(P1ActionEnd());
         P1Animator.SetBool("IsSlicing", false);
 
         // print("p1 slice end");
@@ -965,17 +977,19 @@ public class PlayerController : MonoBehaviour
     }
     void Player1DeflectEnd()
     {
-        P1Action = false;
         P1Animator.SetBool("IsDeflecting", false);
-
         // print("p1 deflect end");
     }
-
+    IEnumerator P1ActionEnd()
+    {
+        yield return new WaitForSeconds(0.2f);
+        P1Action = false;
+    }
 
     // Player 2 Void Functions
     void Player2PunchEnd()
     {
-        P2Action = false;
+        StartCoroutine(P2ActionEnd());
         P2Animator.SetBool("IsPunching", false);
 
         // print("p2 punch end");
@@ -985,14 +999,12 @@ public class PlayerController : MonoBehaviour
     }
     void Player2DodgeEnd()
     {
-        P2Action = false;
         P2Animator.SetBool("IsDodging", false);
-
         // print("p2 dodge end");
     }
     void Player2SliceEnd()
     {
-        P2Action = false;
+        StartCoroutine(P2ActionEnd());
         P2Animator.SetBool("IsSlicing", false);
 
         // print("p2 slice end");
@@ -1002,9 +1014,12 @@ public class PlayerController : MonoBehaviour
     }
     void Player2DeflectEnd()
     {
-        P2Action = false;
         P2Animator.SetBool("IsDeflecting", false);
-
         // print("p2 deflect end");
+    }
+    IEnumerator P2ActionEnd()
+    {
+        yield return new WaitForSeconds(0.2f);
+        P2Action = false;
     }
 }

@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
-    [Header("-------- Audio Source --------")]
+#pragma warning disable IDE0051 // Remove unused private members
+
+    [Header("-------- Audio Sources --------")]
     [SerializeField] AudioSource SFXSource;
 
-    [Header("-------- Audio Clip --------")]
+    [Header("-------- Audio Clips --------")]
 
     // BGM:
     public AudioClip boxingBGM;
-    public AudioClip lockerBGM;
 
     // SFX:
     public AudioClip damageTaken;
