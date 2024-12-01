@@ -16,16 +16,25 @@ public class ChangeScene : MonoBehaviour
 
     public void Button()
     {
-        Invoke("Delay", 0.5f);
+        Invoke("ButtonDelay", 0.5f);
 
         if (SceneManager.GetActiveScene().name == "LockerRoom")
         {
             Destroy(audioManager);
         }
     }
-
-    void Delay()
+    void ButtonDelay()
     {
         SceneManager.LoadScene(TransScreen);
+    }
+
+    public void Reload()
+    {
+        Invoke("ReloadDelay", 0.3f);
+    }
+
+    void ReloadDelay()
+    {
+        SceneManager.LoadScene("LockerRoom");
     }
 }

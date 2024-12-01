@@ -26,4 +26,12 @@ public class AudioManager2 : MonoBehaviour
     {
         MusicSource.PlayOneShot(clip, volume);
     }
+
+    public void Update()
+    {
+        if (!MusicSource.isPlaying)
+        {
+            MusicSource.PlayOneShot(lockerBGM, 0.5f);
+        }
+    }
 }

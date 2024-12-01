@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -61,13 +60,13 @@ public class playerHealth : MonoBehaviour
             winTextObject.SetActive(true);
             if (name == "Player1")
             {
-                winText.text = "Player 2 Wins! Press R to restart";
+                winText.text = "Player 2 Wins!";
                 winText.color = Color.blue;
             }
 
             if (name == "Player2")
             {
-                winText.text = "Player 1 Wins! Press R to restart";
+                winText.text = "Player 1 Wins!";
                 winText.color = Color.red;
             }
 
