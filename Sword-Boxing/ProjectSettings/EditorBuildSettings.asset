@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: d3afc603853bf6c4e9670ea56ed8979c
+  - enabled: 1
+    path: Assets/Scenes/LockerRoom.unity
+    guid: 638967670627e5a4ca871d40342289f9
+  - enabled: 1
     path: Assets/Scenes/BoxingRing.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
